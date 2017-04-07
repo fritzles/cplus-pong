@@ -69,7 +69,9 @@ Core classes:
 		setBallSpeed()
 		setBallAngle()
 		setBallCoordinates()
+		
 		updateScore(Paddle)
+		updatePlayerStats()
 		
 	
 		
