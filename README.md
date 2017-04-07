@@ -6,49 +6,70 @@ Jordan Guzak
 Michael Fritz
 Chris Bratkovics
 
-Classes:
+Core classes:
 	Player
 		String Name
 		Int gamesPlayed
 		Int gamesWon
 		
-		Save data()
+		Save data(Player)
 		Load data()
 		
 	Agent abstract class for Paddle and Ball
-		X coordinate
-		Y coordinate
-		Color
-		Change color
+		Int X coordinate
+		Int Y coordinate
+		Struct Color
+		
+		Pure virtual move()
+		
+		setColor()
+		getY()
+		getX()
+		getColor()
 	
 	Paddle inherits Agent
 		Int points
 		Int length
 		
+		Override move()
+		
+		getPoints()
+		getLength()
+		
 	Ball inherits agent
-		X cord
-		Y cord
-		angle
-		Speed
+		Int angle
+		Int speed
+		
+		Override move()
 	
 	Field has Agents
 		Int height
 		Int width
+		Struct color
+		
+		getHeight()
+		getWidth()
+		getColor()
+		
+		displayField()
 	
 	Game has a Field, Ball, 2 Players
-		Field field
-		Paddle left
-		Paddle right
-		
-		updateScore(Paddle)
-		
+		Field gameField
+		Ball gameBall
+		Paddle leftPaddle
+		Paddle rightPaddle
+		Player player1
+		Player player2
 		
 		checkContact()
 			Checks the ball coordinates and calls smaller collision detection functions
 		
+		checkScore()
+		
 		setBallSpeed()
 		setBallAngle()
 		setBallCoordinates()
+		updateScore(Paddle)
 		
 	
 		
@@ -57,6 +78,7 @@ Stretch goals:
 	Alternative physics
 	Games based on timer, with support for keeping track of lifetime points scored
 	Four player mode
+	Custom ball textures
 
 =======
 
