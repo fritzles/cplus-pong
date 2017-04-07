@@ -61,17 +61,16 @@ Core classes:
 		Player player1
 		Player player2
 		
-		checkContact()
-			Checks the ball coordinates and calls smaller collision detection functions
-		
-		checkScore()
+		checkContact() Checks the ball coordinates and calls smaller collision detection functions
 		
 		setBallSpeed()
 		setBallAngle()
 		setBallCoordinates()
 		
 		updateScore(Paddle)
+		checkScore()
 		updatePlayerStats()
+
 		
 	
 		
