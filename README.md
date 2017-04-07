@@ -1,6 +1,7 @@
 # beer-pong
 CS120 Final Project
 
+<<<<<<< HEAD
 Jordan Guzak
 Michael Fritz
 Chris Bratkovics
@@ -57,3 +58,7 @@ Stretch goals:
 	Games based on timer, with support for keeping track of lifetime points scored
 	Four player mode
 
+=======
+
+Sick Dank Nasty
+>>>>>>> origin/master
