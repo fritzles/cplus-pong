@@ -9,17 +9,13 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 Ball::Ball() {
     xPos = 0;
     yPos = 0;
-    objColor.r = 255;
-    objColor.g = 255;
-    objColor.b = 255;
+    objColor = WHITE;
 }
 
 Ball::Ball(int x, int y) {
     xPos = x;
     yPos = y;
-    objColor.r = 255;
-    objColor.g = 255;
-    objColor.b = 255;
+    objColor = WHITE;
 }
 
 Ball::Ball(color c) {

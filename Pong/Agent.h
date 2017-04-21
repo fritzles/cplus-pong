@@ -7,12 +7,8 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 #ifndef AGENT_H
 #define AGENT_H
 
-struct color
-{
-    int r;
-    int g;
-    int b;
-};
+#include "Colors.h"
+
 
 class Agent
 {
