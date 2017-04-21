@@ -6,7 +6,7 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 
 #include <iostream>
 
-#include "Field.h"
+#include "GameObjects.h"
 
 const bool MOVEMENT_TESTING = true;
 
