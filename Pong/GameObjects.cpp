@@ -70,32 +70,20 @@ Ball::Ball() {
     yPos = 0;
     speed = 1;
     angle = 0;
-    //objColor = WHITE;
+    diameter = 0;
+
+    objColor.r = 255;
+    objColor.g = 255;
+    objColor.b = 255;
 }
 
-Ball::Ball(double x, double y) {
+Ball::Ball(double d, double x, double y, color c) {
     xPos = x;
     yPos = y;
     speed = 1;
     angle = 0;
-    //objColor = WHITE;
-}
+    diameter = d;
 
-Ball::Ball(color c) {
-    xPos = 0;
-    yPos = 0;
-    speed = 1;
-    angle = 0;
-    objColor.r = c.r;
-    objColor.g = c.g;
-    objColor.b = c.b;
-}
-
-Ball::Ball(double x, double y, color c) {
-    xPos = x;
-    yPos = y;
-    speed = 1;
-    angle = 0;
     objColor.r = c.r;
     objColor.g = c.g;
     objColor.b = c.b;
@@ -142,12 +130,40 @@ void Ball::move() {
 Paddle::Paddle() {
     points = 0;
     length = 10;
+    speed = 1;
+    direction = Up;
+    xPos = 0;
+    yPos = 0;
 
+    objColor.r = 255;
+    objColor.g = 255;
+    objColor.b = 255;
 }
 
-Paddle::Paddle(int l) {
+Paddle::Paddle(int l, double x, double y) {
     points = 0;
     length = l;
+    speed = 1;
+    direction = Up;
+    xPos = x;
+    yPos = y;
+
+    objColor.r = 255;
+    objColor.g = 255;
+    objColor.b = 255;
+}
+
+Paddle::Paddle(int l, double x, double y, color c) {
+    points = 0;
+    length = l;
+    speed = 1;
+    direction = Up;
+    xPos = x;
+    yPos = y;
+
+    objColor.r = c.r;
+    objColor.g = c.g;
+    objColor.b = c.b;
 }
 
 Paddle::~Paddle() {
@@ -155,7 +171,7 @@ Paddle::~Paddle() {
 }
 
 void Paddle::move() {
-    if (direction == 1) {
+    if (direction == Up) {
         yPos += 1 * speed;
     }
     else {
@@ -168,12 +184,26 @@ void Paddle::setPaddleLocation(int x, int y) {
     yPos = y;
 }
 
+void Paddle::setDirection(PaddleDirection d) {
+    direction = d;
+}
+
+void Paddle::setSpeed(double s) {
+    if (s > 0) {
+        speed = s;
+    }
+}
+
 int Paddle::getPoints() const {
     return points;
 }
 
 int Paddle::getLength() const {
     return length;
+}
+
+double Paddle::getSpeed() const {
+    return speed;
 }
 
 // ***************************
@@ -223,9 +253,7 @@ Field::Field(int w, int h, color c) {
 
 }
 
-Field::~Field() {
-
-}
+Field::~Field() { }
 
 void Field::setLeftPaddle(Paddle p) {
     leftPaddle = p;

@@ -20,7 +20,8 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 
 const static double PI = 3.14159265;
 
-enum Side { Left, Right, Top, Bottom };
+enum PaddleDirection { Up, Down };
+enum ContactSide { Left, Right, Top, Bottom };
 
 // ***************************
 //  Agent
@@ -52,9 +53,8 @@ class Ball : public Agent
 {
 public:
     Ball();
-    Ball(double, double);
-    Ball(color);
-    Ball(double, double, color);
+    Ball(double, double, double);
+    Ball(double, double, double, color);
     ~Ball();
 
     void setAngle(int);
@@ -67,7 +67,7 @@ public:
 
 private:
     int angle;
-    double speed;
+    double speed, diameter;
 
 };
 
@@ -77,18 +77,23 @@ class Paddle : public Agent
 {
 public:
     Paddle();
-    Paddle(int);
+    Paddle(int, double, double);
+    Paddle(int, double, double, color);
     ~Paddle();
 
     virtual void move() override;
 
     void setPaddleLocation(int, int);
+    void setDirection(PaddleDirection);
+    void setSpeed(double);
 
     int getPoints() const;
     int getLength() const;
+    double getSpeed() const;
 
 private:
-    int points, length, direction;
+    int points, length;
+    PaddleDirection direction;
     double speed;
 
 };
