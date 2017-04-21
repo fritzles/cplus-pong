@@ -1,5 +1,5 @@
 
-inFile = open('crayolaColors.txt','r')
+infile = open('crayolaColors.txt','r')
 
 curLine = ''
 curLinePieces = []
@@ -7,8 +7,8 @@ curLinePieces = []
 name = []
 rgb = []
 
-while (inFile.readline() != ''):
-    curLine = inFile.readline()
+while (infile.readline() != ''):
+    curLine = infile.readline()
 
     # extract and clean name
     curLinePieces = curLine.split('\t')
@@ -23,10 +23,37 @@ while (inFile.readline() != ''):
 
 
 # format and save values in new file
-outFile = open('crayolaColorsStruct.txt','w')
+outfile = open('crayolaColorsStruct.txt','w')
 
+# generate constants
+outfile.write("const int NUM_CRAYOLA_COLORS = " + str(len(name)) + ";\n\n")
+
+# generate array of color rgb values
+outfile.write("color CRAYOLA_COLOR[NUM_CRAYOLA_COLORS] = { ")
 for i in range(0, len(name)):
-    outFile.write("color " + name[i] + " { " + rgb[i] + " }\n")
+    if (i % 6 == 0 or i % 6 == 3):
+        outfile.write("\n            ")
 
-outFile.close()
+    outfile.write("color { " + rgb[i] + " }")
+
+    if (i != len(name)-1):
+        outfile.write(", ")
+
+outfile.write("\n            };")
+outfile.write("\n\n")
+
+# generate array of color names
+outfile.write("std::string COLOR_NAME[NUM_CRAYOLA_COLORS] = { ")
+for i in range(0, len(name)):
+    if (i % 6 == 0 or i % 6 == 3):
+        outfile.write("\n            ")
+
+    outfile.write('"' + name[i] + '"')
+    
+    if (i != len(name)-1):
+        outfile.write(", ")
+
+outfile.write("\n            };")
+
+outfile.close()
     
