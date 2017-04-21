@@ -7,6 +7,20 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 #include "GameObjects.h"
 
 // ***************************
+//  Global helper functions
+double cint(double x) {
+    if (modf(x, 0) >= .5)
+        return x >= 0 ? ceil(x) : floor(x);
+    else
+        return x<0 ? ceil(x) : floor(x);
+}
+
+double round(double r, unsigned places) {
+    double off = pow(10, places);
+    return cint(r*off) / off;
+}
+
+// ***************************
 //  Agent
 
 Agent::Agent() {
@@ -115,8 +129,12 @@ double Ball::getSpeed() const {
 }
 
 void Ball::move() {
-    xPos = sin(angle * PI / 180) * speed;
-    yPos = cos(angle * PI / 180) * speed;
+    double xUpdate = round(cos(angle * M_PI / 180)) * speed;
+    double yUpdate = round(sin(angle * M_PI / 180)) * speed;
+
+    // rounding to compensate for math rounding errors
+    xPos += xUpdate;
+    yPos += yUpdate;
 }
 
 // ***************************
@@ -161,8 +179,8 @@ int Paddle::getLength() const {
 // ***************************
 //  Field
 Field::Field() {
-    width = 10;
-    height = 10;
+    width = DEFAULT_FIELD_WIDTH;
+    height = DEFAULT_FIELD_HEIGHT;
     //fieldColor = BLACK;
 }
 
@@ -172,19 +190,36 @@ Field::Field(int w, int h) {
         height = h;
     }
     else {
-        width = 10;
-        height = 10;
+        width = DEFAULT_FIELD_WIDTH;
+        height = DEFAULT_FIELD_HEIGHT;
     }
-    //fieldColor = BLACK;
+    fieldColor = color{0, 0, 0};
 
 }
 
 Field::Field(color c) {
-    width = 10;
-    height = 10;
+    width = DEFAULT_FIELD_WIDTH;
+    height = DEFAULT_FIELD_HEIGHT;
+
+    fieldColor.r = c.r;
+    fieldColor.g = c.g;
+    fieldColor.b = c.b;
+
 }
 
 Field::Field(int w, int h, color c) {
+    if (w > 0 && h > 0) {
+        width = w;
+        height = h;
+    }
+    else {
+        width = DEFAULT_FIELD_WIDTH;
+        height = DEFAULT_FIELD_HEIGHT;
+    }
+
+    fieldColor.r = c.r;
+    fieldColor.g = c.g;
+    fieldColor.b = c.b;
 
 }
 

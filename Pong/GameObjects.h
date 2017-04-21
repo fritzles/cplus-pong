@@ -7,20 +7,16 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 #ifndef GAME_OBJECTS_H
 #define GAME_OBJECTS_H
 
+#define _USE_MATH_DEFINES
 #include <math.h>
 
-//#include "Colors.h"
-struct color {
-    int r;
-    int g;
-    int b;
-};
+#include <iostream>
 
-//color BLACK{ 0, 0, 0 };
-//color WHITE{ 255, 255, 255 };
+#include "Colors.h"
 
-//int DEFAULT_FIELD_HEIGHT = 400;
-//int DEFAULT_FIELD_WIDTH = 600;
+
+//color BLACK = color{ 0, 0, 0 };
+//color WHITE(255, 255, 255 );
 
 const static double PI = 3.14159265;
 
@@ -99,8 +95,6 @@ private:
 
 // ***************************
 //  Field
-
-
 class Field
 {
 public:
@@ -127,6 +121,9 @@ private:
     Paddle rightPaddle;
 
     Ball ball;
+
+    int DEFAULT_FIELD_HEIGHT = 400;
+    int DEFAULT_FIELD_WIDTH = 600;
 
 };
 

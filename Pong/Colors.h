@@ -7,6 +7,15 @@
 #ifndef COLORS_H
 #define COLORS_H
 
+
+struct color {
+    int r;
+    int g;
+    int b;
+
+};
+
+/*
 #include <string>
 
 struct color {
@@ -66,5 +75,6 @@ std::string COLOR_NAME[NUM_CRAYOLA_COLORS] = {
     "Radical_Red", "Wild_Watermelon", "Salmon",
     "White", "Silver", "Black"
 };
+*/
 
 #endif // !COLORS_H
