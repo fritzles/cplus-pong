@@ -9,7 +9,18 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 
 #include <math.h>
 
-#include "Colors.h"
+//#include "Colors.h"
+struct color {
+    int r;
+    int g;
+    int b;
+};
+
+//color BLACK{ 0, 0, 0 };
+//color WHITE{ 255, 255, 255 };
+
+//int DEFAULT_FIELD_HEIGHT = 400;
+//int DEFAULT_FIELD_WIDTH = 600;
 
 const static double PI = 3.14159265;
 
@@ -88,8 +99,7 @@ private:
 
 // ***************************
 //  Field
-int DEFAULT_FIELD_HEIGHT = 400;
-int DEFAULT_FIELD_WIDTH = 600;
+
 
 class Field
 {

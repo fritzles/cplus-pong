@@ -56,7 +56,7 @@ Ball::Ball() {
     yPos = 0;
     speed = 1;
     angle = 0;
-    objColor = WHITE;
+    //objColor = WHITE;
 }
 
 Ball::Ball(double x, double y) {
@@ -64,7 +64,7 @@ Ball::Ball(double x, double y) {
     yPos = y;
     speed = 1;
     angle = 0;
-    objColor = WHITE;
+    //objColor = WHITE;
 }
 
 Ball::Ball(color c) {
@@ -161,9 +161,9 @@ int Paddle::getLength() const {
 // ***************************
 //  Field
 Field::Field() {
-    width = DEFAULT_FIELD_WIDTH;
-    height = DEFAULT_FIELD_HEIGHT;
-    fieldColor = BLACK;
+    width = 10;
+    height = 10;
+    //fieldColor = BLACK;
 }
 
 Field::Field(int w, int h) {
@@ -172,16 +172,16 @@ Field::Field(int w, int h) {
         height = h;
     }
     else {
-        width = DEFAULT_FIELD_WIDTH;
-        height = DEFAULT_FIELD_HEIGHT;
+        width = 10;
+        height = 10;
     }
-    fieldColor = BLACK;
+    //fieldColor = BLACK;
 
 }
 
 Field::Field(color c) {
-    width = DEFAULT_FIELD_WIDTH;
-    height = DEFAULT_FIELD_HEIGHT;
+    width = 10;
+    height = 10;
 }
 
 Field::Field(int w, int h, color c) {

@@ -3,4 +3,5 @@
   Compiling...
   Pong.cpp
   Generating Code...
-LINK : fatal error LNK1104: cannot open file 'kernel32.lib'
+  Pong.vcxproj -> C:\Users\user\Documents\GitHub\beer-pong\Pong\Debug\Pong.exe
+  Pong.vcxproj -> C:\Users\user\Documents\GitHub\beer-pong\Pong\Debug\Pong.pdb (Partial PDB)
