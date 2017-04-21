@@ -9,11 +9,12 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 Agent::Agent() {
     xPos = 0;
     yPos = 0;
+    objColor.r = 255;
+    objColor.g = 255;
+    objColor.b = 255;
 }
 
-Agent::~Agent() {
-
-}
+Agent::~Agent() { }
 
 /** Setters and Getters
 

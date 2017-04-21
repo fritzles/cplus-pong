@@ -26,7 +26,6 @@ public:
 private:
     int points, length;
 
-
 };
 
 #endif // !PADDLE_H
