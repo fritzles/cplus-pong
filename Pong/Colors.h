@@ -15,7 +15,6 @@ struct color {
     int b;
 };
 
-
 color BLACK{ 0, 0, 0 };
 color WHITE{ 255, 255, 255 };
 

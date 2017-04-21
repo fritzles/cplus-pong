@@ -9,6 +9,9 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 
 #include "Colors.h"
 
+const static double PI = 3.14159265;
+
+enum Side { Left, Right, Top, Bottom };
 
 class Agent
 {
@@ -17,17 +20,17 @@ public:
     ~Agent();
 
     void setcolor(color);
-    void setX(int);
-    void setY(int);
+    void setX(double);
+    void setY(double);
 
     color getcolor() const;
-    int getX() const;
-    int getY() const;
+    double getX() const;
+    double getY() const;
 
     virtual void move() = 0;
 
 protected:
-    int xPos, yPos;
+    double xPos, yPos;
     color objColor;
 
 };

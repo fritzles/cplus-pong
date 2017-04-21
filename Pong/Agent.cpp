@@ -25,11 +25,11 @@ void Agent::setcolor(color c) {
     objColor.b = c.b;
 }
 
-void Agent::setX(int x) {
+void Agent::setX(double x) {
     xPos = x;
 }
 
-void Agent::setY(int y) {
+void Agent::setY(double y) {
     yPos = y;
 }
 
@@ -37,10 +37,10 @@ color Agent::getcolor() const {
     return objColor;
 }
 
-int Agent::getX() const {
+double Agent::getX() const {
     return xPos;
 }
 
-int Agent::getY() const {
+double Agent::getY() const {
     return yPos;
 }

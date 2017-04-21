@@ -26,8 +26,8 @@ public:
 
     ~Field();
 
-    void setLeftPlayer(Player);
-    void setRightPlayer(Player);
+    void setLeftPaddle(Paddle);
+    void setRightPaddle(Paddle);
 
     int getHeight() const;
     int getWidth() const;

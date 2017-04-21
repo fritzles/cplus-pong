@@ -22,7 +22,12 @@ Paddle::~Paddle() {
 }
 
 void Paddle::move() {
-
+    if (direction == 1) {
+        yPos += 1*speed;
+    }
+    else {
+        yPos -= 1*speed;
+    }
 }
 
 void Paddle::setPaddleLocation(int x, int y) {

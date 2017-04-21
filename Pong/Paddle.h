@@ -24,7 +24,8 @@ public:
     int getLength() const;
 
 private:
-    int points, length;
+    int points, length, direction;
+    double speed;
 
 };
 

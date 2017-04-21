@@ -1,1 +1,9 @@
-﻿
+﻿  Pong.cpp
+  Field.cpp
+  Ball.cpp
+  Generating Code...
+  Compiling...
+  Paddle.cpp
+  Agent.cpp
+  Generating Code...
+LINK : fatal error LNK1104: cannot open file 'kernel32.lib'

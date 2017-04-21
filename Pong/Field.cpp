@@ -18,8 +18,11 @@ Field::Field(int w, int h) {
         height = h;
     }
     else {
-        
+        width = DEFAULT_FIELD_WIDTH;
+        height = DEFAULT_FIELD_HEIGHT;
     }
+    fieldColor = BLACK;
+
 }
 
 Field::Field(color c) {
@@ -35,17 +38,22 @@ Field::~Field() {
 
 }
 
-int Field::getHeight() const
-{
-    return 0;
+void Field::setLeftPaddle(Paddle p) {
+    leftPaddle = p;
 }
 
-int Field::getWidth() const
-{
-    return 0;
+void Field::setRightPaddle(Paddle p) {
+    rightPaddle = p;
 }
 
-color Field::getColor() const
-{
-    return color();
+int Field::getHeight() const {
+    return height;
+}
+
+int Field::getWidth() const {
+    return width;
+}
+
+color Field::getColor() const {
+    return fieldColor;
 }
