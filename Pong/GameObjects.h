@@ -1,6 +1,6 @@
 /*
 CS 120 Final Project
-Pong: Agent Class
+Pong: Game Object Classes
 Jordan Guzak, Michael Fritz, Chris Bracky
 */
 

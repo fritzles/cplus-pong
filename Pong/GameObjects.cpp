@@ -1,6 +1,6 @@
 /*
 CS 120 Final Project
-Pong: Agent Implementation
+Pong: Game Object Implementations
 Jordan Guzak, Michael Fritz, Chris Bracky
 */
 
