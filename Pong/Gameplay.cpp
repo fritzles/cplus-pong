@@ -21,14 +21,27 @@ void Gameplay::setField(Field) {
 }
 
 void Gameplay::checkContact() {
+    if (ballFieldYTouch(field.ball, field)) {
 
+    }
+
+    if (paddleBallTouch(field.leftPaddle, field.ball)) {
+
+    }
+
+    if (paddleBallTouch(field.rightPaddle, field.ball)) {
+
+    }
+
+    if (ballFieldTouchLeft(field.ball, field)) {
+
+    }
+
+    if (ballFieldTouchRight(field.ball, field)) {
+
+    }
 }
 
-/**
-R: ball and field to check for top/bottom collision
-M: none
-E: true for top/bottom collision, false otherwise
-*/
 bool Gameplay::ballFieldYTouch(Ball b, Field f) const {
     if (b.getY() <= 0) {
         return true;
@@ -41,11 +54,6 @@ bool Gameplay::ballFieldYTouch(Ball b, Field f) const {
     return false;
 }
 
-/**
-R: ball and field to check for left collision
-M: none
-E: true for left collision, false otherwise
-*/
 bool Gameplay::ballFieldTouchLeft(Ball b, Field f) const {
     if (b.getX() - b.diameter <= 0) {
         return true;
@@ -54,11 +62,6 @@ bool Gameplay::ballFieldTouchLeft(Ball b, Field f) const {
     return false;
 }
 
-/**
-R: ball and field to check for right collision
-M: none
-E: true for right collision, false otherwise
-*/
 bool Gameplay::ballFieldTouchRight(Ball b, Field f) const {
     if (b.getX() + b.diameter > f.getWidth()) {
         return true;
@@ -67,37 +70,33 @@ bool Gameplay::ballFieldTouchRight(Ball b, Field f) const {
     return false;
 }
 
-/**
-R: paddle and field to check for top collision
-M: none
-E: true for top collision, false otherwise
-*/
 bool Gameplay::paddleFieldTouchTop(Paddle p, Field f) const {
-    if (p.getY() + p.getLength()/2 >= f.getHeight()) {
+    if (p.getY() + p.getLength() / 2 >= f.getHeight()) {
         return true;
     }
     return false;
 }
 
-/**
-R: paddle and field to check for bottom collision
-M: none
-E: true for bottom collision, false otherwise
-*/
 bool Gameplay::paddleFieldTouchBottom(Paddle p, Field f) const {
-    if (p.getY() - p.getLength()/2 <= 0) {
+    if (p.getY() - p.getLength() / 2 <= 0) {
         return true;
     }
     return false;
 }
 
-/**
-R: paddle and ball to check for left collision
-M: none
-E: true for left collision, false otherwise
-*/
 bool Gameplay::paddleBallTouch(Paddle p, Ball b) const {
-
+    // x check
+    if (p.getX() + p.getWidth() >= b.getX() - b.diameter) {
+        // y check
+        if (p.getY() + p.getLength() / 2 >= b.getY() - b.diameter && p.getY() - p.getLength() / 2 <= b.getY() + b.diameter ) {
+            return true;
+        }
+    } else if (p.getX() - p.getWidth() >= b.getX() - b.diameter) {
+        // y check
+        if (p.getY() + p.getLength() / 2 >= b.getY() - b.diameter && p.getY() - p.getLength() / 2 <= b.getY() + b.diameter) {
+            return true;
+        }
+    }
     return false;
 }
 
