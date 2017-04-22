@@ -8,6 +8,7 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 #define GAMEPLAY_H
 
 #include "GameObjects.h"
+#include "Player.h"
 
 class Gameplay
 {
@@ -21,12 +22,20 @@ public:
 
     void checkContact();
 
-    bool ballFieldCollision(Ball, Field);
+    bool ballFieldYCollision(Ball, Field);
+    bool ballFieldCollisionLeft(Ball, Field);
+    bool ballFieldCollisionRight(Ball, Field);
     bool paddleFieldCollision(Paddle, Field);
     bool paddleBallCollision(Paddle, Ball);
 
+    void gameOver();
+    void gameStart();
+    void score();
+
 private:
     Field field;
+
+    Player player1, player2;
 
 };
 
