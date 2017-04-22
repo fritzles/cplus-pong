@@ -38,6 +38,7 @@ private:
     Field field;
 
     Player player1, player2;
+    int player1Score, player2Score;
 
 };
 

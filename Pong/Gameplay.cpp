@@ -100,3 +100,35 @@ bool Gameplay::paddleBallTouch(Paddle p, Ball b) const {
 
     return false;
 }
+
+
+void Gameplay::gameOver(){
+    if(player1Score > player2Score){
+        player1.gamesWon++;
+        player1.gamesPlayed++;
+        player2.gamesPlayed++;
+    } else {
+        player1.gamesPlayed++;
+        player2.gamesPlayed++;
+        player2.gamesWon++;
+    }
+    player1.saveData();
+    player2.saveData();
+}
+
+void Gameplay::gameStart(){
+    field.leftPaddle.leftPaddle.setPaddleLocation(0, height / 2);
+    field.rightPaddle.setPaddleLocation(width - rightPaddle.getWidth(), height / 2);
+    field.ball.setPos(0,0);
+
+    player1Score = 0;
+    player2Score = 0;
+}
+
+void Gameplay::score(int player){
+    if(player == 0) {
+        player1Score++;
+    } else {
+        player2Score++;
+    }
+}
