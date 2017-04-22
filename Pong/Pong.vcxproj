@@ -112,12 +112,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameObjects.cpp" />
+    <ClCompile Include="Gameplay.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Pong.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjects.h" />
     <ClInclude Include="Colors.h" />
+    <ClInclude Include="Gameplay.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
