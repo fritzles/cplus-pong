@@ -4,9 +4,8 @@ Pong
 Jordan Guzak, Michael Fritz, Chris Bracky
 */
 
-
 #include <vector>
-
+#include "Gameplay.h"
 #include "GameObjects.h"
 
 using namespace std;
@@ -128,9 +127,43 @@ int main() {
 
     if (COLISION_TESTING) {
         Field collisionField = Field();
+        Gameplay game = Gameplay();
+        game.setField(collisionField);
         collisionField.initalizeBall();
-        collisionField.ball.setPos(5,2);
+        
+        // bottom collision test
+        cout << "\nBottom collision Test:" << endl;
+        collisionField.ball.setPos(5, 1);
+        collisionField.ball.setAngle(270);
+        cout << "Collision: " << game.ballFieldYTouch(collisionField.ball, collisionField) << endl;
+        collisionField.ball.move();
+        cout << "Collision: " << game.ballFieldYTouch(collisionField.ball, collisionField) << endl;
 
+        // top collision test
+        cout << "\nTop collision Test:" << endl;
+        collisionField.ball.setPos(5, collisionField.getHeight()-1);
+        collisionField.ball.setAngle(90);
+        cout << "Collision: " << game.ballFieldYTouch(collisionField.ball, collisionField) << endl;
+        collisionField.ball.move();
+        cout << "Collision: " << game.ballFieldYTouch(collisionField.ball, collisionField) << endl;
+
+        // left collision test
+        cout << "\nLeft collision Test:" << endl;
+        collisionField.ball.setPos(1, 5);
+        collisionField.ball.setAngle(180);
+        cout << "Collision: " << game.ballFieldTouchLeft(collisionField.ball, collisionField) << endl;
+        collisionField.ball.move();
+        cout << "Collision: " << game.ballFieldTouchLeft(collisionField.ball, collisionField) << endl;
+
+        // right collision test
+        cout << "\nRight collision Test:" << endl;
+        collisionField.ball.setPos(collisionField.getWidth() - 1, 5);
+        collisionField.ball.setAngle(0);
+        cout << "Collision: " << game.ballFieldTouchRight(collisionField.ball, collisionField) << endl;
+        collisionField.ball.move();
+        cout << "Collision: " << game.ballFieldTouchRight(collisionField.ball, collisionField) << endl;
+
+        collisionField.initalizePaddles();
 
 
     }

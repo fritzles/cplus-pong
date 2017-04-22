@@ -12,17 +12,17 @@ Gameplay::Gameplay() {
 
 Gameplay::~Gameplay() { }
 
-void Gameplay::setField()
-{
+void Gameplay::setField() {
+    field = Field();
 }
 
-void Gameplay::setField(Field) {
-
+void Gameplay::setField(Field f) {
+    field = f;
 }
 
 void Gameplay::checkContact() {
     if (ballFieldYTouch(field.ball, field)) {
-
+        
     }
 
     if (paddleBallTouch(field.leftPaddle, field.ball)) {
@@ -55,7 +55,7 @@ bool Gameplay::ballFieldYTouch(Ball b, Field f) const {
 }
 
 bool Gameplay::ballFieldTouchLeft(Ball b, Field f) const {
-    if (b.getX() - b.diameter <= 0) {
+    if (b.getX() - b.diameter < 0) {
         return true;
     }
 
