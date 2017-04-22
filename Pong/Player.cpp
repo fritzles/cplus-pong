@@ -41,15 +41,11 @@ void Player::loadData(string playerName) {
         player << gamesWon << " " << gamesPlayed;
         player.close();
 
-    }
-    else
-    {    // use existing file
+    } else {    // use existing file
         int test, test2;
         player >> gamesWon;
         player >> gamesPlayed;
         player.close();
-        cout<<"\n";
-
     }
 }
 
