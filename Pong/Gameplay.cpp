@@ -24,7 +24,12 @@ void Gameplay::checkContact() {
 
 }
 
-bool Gameplay::ballFieldYCollision(Ball b, Field f) {
+/**
+R: ball and field to check for top/bottom collision
+M: none
+E: true for top/bottom collision, false otherwise
+*/
+bool Gameplay::ballFieldYTouch(Ball b, Field f) const {
     if (b.getY() <= 0) {
         return true;
     }
@@ -36,34 +41,62 @@ bool Gameplay::ballFieldYCollision(Ball b, Field f) {
     return false;
 }
 
-bool Gameplay::ballFieldCollisionLeft(Ball b, Field f) {
-    if (b.getX() <= 0) {
-        return true;
-    }
-
-    if (b.getX() >= f.getWidth()) {
-        return true;
-    }
-
-    return false;
-}
-
-bool Gameplay::ballFieldCollisionRight(Ball b, Field f) {
-    if (b.getX() <= 0) {
-        return true;
-    }
-
-    if (b.getX() >= f.getWidth()) {
+/**
+R: ball and field to check for left collision
+M: none
+E: true for left collision, false otherwise
+*/
+bool Gameplay::ballFieldTouchLeft(Ball b, Field f) const {
+    if (b.getX() - b.diameter <= 0) {
         return true;
     }
 
     return false;
 }
 
-bool Gameplay::paddleFieldCollision(Paddle, Field) {
+/**
+R: ball and field to check for right collision
+M: none
+E: true for right collision, false otherwise
+*/
+bool Gameplay::ballFieldTouchRight(Ball b, Field f) const {
+    if (b.getX() + b.diameter > f.getWidth()) {
+        return true;
+    }
+
     return false;
 }
 
-bool Gameplay::paddleBallCollision(Paddle, Ball) {
+/**
+R: paddle and field to check for top collision
+M: none
+E: true for top collision, false otherwise
+*/
+bool Gameplay::paddleFieldTouchTop(Paddle p, Field f) const {
+    if (p.getY() + p.getLength()/2 >= f.getHeight()) {
+        return true;
+    }
+    return false;
+}
+
+/**
+R: paddle and field to check for bottom collision
+M: none
+E: true for bottom collision, false otherwise
+*/
+bool Gameplay::paddleFieldTouchBottom(Paddle p, Field f) const {
+    if (p.getY() - p.getLength()/2 <= 0) {
+        return true;
+    }
+    return false;
+}
+
+/**
+R: paddle and ball to check for left collision
+M: none
+E: true for left collision, false otherwise
+*/
+bool Gameplay::paddleBallTouch(Paddle p, Ball b) const {
+
     return false;
 }

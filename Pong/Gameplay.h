@@ -22,11 +22,13 @@ public:
 
     void checkContact();
 
-    bool ballFieldYCollision(Ball, Field);
-    bool ballFieldCollisionLeft(Ball, Field);
-    bool ballFieldCollisionRight(Ball, Field);
-    bool paddleFieldCollision(Paddle, Field);
-    bool paddleBallCollision(Paddle, Ball);
+    bool ballFieldYTouch(Ball, Field) const;
+    bool ballFieldTouchLeft(Ball, Field) const;
+    bool ballFieldTouchRight(Ball, Field) const;
+    bool paddleFieldTouchTop(Paddle, Field) const;
+    bool paddleFieldTouchBottom(Paddle, Field) const;
+
+    bool paddleBallTouch(Paddle, Ball) const;
 
     void gameOver();
     void gameStart();

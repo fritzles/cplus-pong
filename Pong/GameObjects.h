@@ -50,6 +50,7 @@ protected:
 class Ball : public Agent
 {
 public:
+    double  diameter;
     Ball();
     Ball(double);
     Ball(double, color);
@@ -68,7 +69,7 @@ public:
 
 private:
     int angle;
-    double speed, diameter;
+    double speed;
 
 };
 
