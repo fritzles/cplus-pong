@@ -53,12 +53,13 @@ class Ball : public Agent
 {
 public:
     Ball();
-    Ball(double, double, double);
-    Ball(double, double, double, color);
+    Ball(double);
+    Ball(double, color);
     ~Ball();
 
     void setAngle(int);
     void setSpeed(double);
+    void setPos(int, int);
 
     int getAngle() const;
     double getSpeed() const;
@@ -89,10 +90,11 @@ public:
 
     int getPoints() const;
     int getLength() const;
+    int getWidth() const;
     double getSpeed() const;
 
 private:
-    int points, length;
+    int points, length, width;
     PaddleDirection direction;
     double speed;
 
@@ -103,15 +105,22 @@ private:
 class Field
 {
 public:
+    Paddle leftPaddle;
+    Paddle rightPaddle;
+    Ball ball;
+
     Field();
     Field(int, int);
-    Field(color);
     Field(int, int, color);
 
     ~Field();
 
-    void setLeftPaddle(Paddle);
-    void setRightPaddle(Paddle);
+    void initalizePaddles();
+    void initalizePaddles(Paddle, Paddle);
+
+    // setup ball on field
+    void initalizeBall();
+    void initalizeBall(Ball);
 
     int getHeight() const;
     int getWidth() const;
@@ -121,11 +130,6 @@ public:
 private:
     int height, width;
     color fieldColor;
-
-    Paddle leftPaddle;
-    Paddle rightPaddle;
-
-    Ball ball;
 
     int DEFAULT_FIELD_HEIGHT = 400;
     int DEFAULT_FIELD_WIDTH = 600;

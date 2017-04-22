@@ -66,23 +66,35 @@ double Agent::getY() const {
 //  Ball
 
 Ball::Ball() {
-    xPos = 0;
-    yPos = 0;
     speed = 1;
     angle = 0;
-    diameter = 0;
+    diameter = 2;
+
+    setPos(0, 0);
 
     objColor.r = 255;
     objColor.g = 255;
     objColor.b = 255;
 }
 
-Ball::Ball(double d, double x, double y, color c) {
-    xPos = x;
-    yPos = y;
+Ball::Ball(double d) {
     speed = 1;
     angle = 0;
     diameter = d;
+
+    setPos(0, 0);
+
+    objColor.r = 255;
+    objColor.g = 255;
+    objColor.b = 255;
+}
+
+Ball::Ball(double d, color c) {
+    speed = 1;
+    angle = 0;
+    diameter = d;
+
+    setPos(0, 0);
 
     objColor.r = c.r;
     objColor.g = c.g;
@@ -108,6 +120,11 @@ void Ball::setSpeed(double s) {
     }
 }
 
+void Ball::setPos(int x, int y) {
+    this->setX(x);
+    this->setY(y);
+}
+
 int Ball::getAngle() const {
     return angle;
 }
@@ -130,6 +147,7 @@ void Ball::move() {
 Paddle::Paddle() {
     points = 0;
     length = 10;
+    width = 2;
     speed = 1;
     direction = Up;
     xPos = 0;
@@ -143,6 +161,7 @@ Paddle::Paddle() {
 Paddle::Paddle(int l, double x, double y) {
     points = 0;
     length = l;
+    width = 2;
     speed = 1;
     direction = Up;
     xPos = x;
@@ -156,6 +175,7 @@ Paddle::Paddle(int l, double x, double y) {
 Paddle::Paddle(int l, double x, double y, color c) {
     points = 0;
     length = l;
+    width = 2;
     speed = 1;
     direction = Up;
     xPos = x;
@@ -202,6 +222,10 @@ int Paddle::getLength() const {
     return length;
 }
 
+int Paddle::getWidth() const {
+    return width;
+}
+
 double Paddle::getSpeed() const {
     return speed;
 }
@@ -223,18 +247,10 @@ Field::Field(int w, int h) {
         width = DEFAULT_FIELD_WIDTH;
         height = DEFAULT_FIELD_HEIGHT;
     }
-    fieldColor = color{0, 0, 0};
 
-}
-
-Field::Field(color c) {
-    width = DEFAULT_FIELD_WIDTH;
-    height = DEFAULT_FIELD_HEIGHT;
-
-    fieldColor.r = c.r;
-    fieldColor.g = c.g;
-    fieldColor.b = c.b;
-
+    fieldColor.r = 0;
+    fieldColor.g = 0;
+    fieldColor.b = 0;
 }
 
 Field::Field(int w, int h, color c) {
@@ -250,17 +266,35 @@ Field::Field(int w, int h, color c) {
     fieldColor.r = c.r;
     fieldColor.g = c.g;
     fieldColor.b = c.b;
-
 }
 
 Field::~Field() { }
 
-void Field::setLeftPaddle(Paddle p) {
-    leftPaddle = p;
+void Field::initalizePaddles() {
+    leftPaddle = Paddle();
+    leftPaddle.setPaddleLocation(0, height / 2);
+
+    rightPaddle = Paddle();
+    rightPaddle.setPaddleLocation(width - rightPaddle.getWidth(), height / 2);
 }
 
-void Field::setRightPaddle(Paddle p) {
-    rightPaddle = p;
+void Field::initalizePaddles(Paddle l, Paddle r) {
+    // store and place paddles
+    leftPaddle = l;
+    leftPaddle.setPaddleLocation(0, height/2);
+
+    rightPaddle = r;
+    rightPaddle.setPaddleLocation(width-rightPaddle.getWidth(), height/2);
+}
+
+void Field::initalizeBall() {
+    ball = Ball();
+    ball.setPos(width/2, height/2);
+}
+
+void Field::initalizeBall(Ball b) {
+    ball = b;
+    ball.setPos(width / 2, height / 2);
 }
 
 int Field::getHeight() const {

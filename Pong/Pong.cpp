@@ -13,7 +13,8 @@ using namespace std;
 
 int main() {
 
-    const bool MOVEMENT_TESTING = true;
+    const bool MOVEMENT_TESTING = false;
+    const bool FIELD_TESTING = true;
     const bool COLISION_TESTING = false;
     const bool GAME_MECHANICS_TESTING = false;
     const bool PLAYER_DATA_TESTING = false;
@@ -63,6 +64,7 @@ int main() {
             cout << "  X,Y: " << testBall.getX() << "," << testBall.getY() << endl;
         }
 
+
         // **************************
         // paddle movement
         Paddle testPaddle = Paddle();
@@ -101,16 +103,36 @@ int main() {
 
     }
 
-    if (COLISION_TESTING) {
+    // field object construction test
+    if (FIELD_TESTING) {
 
+        Field testField = Field();
+        testField.initalizeBall();
+        testField.initalizePaddles();
+        
+        cout << "Default field size: " << testField.getWidth() << "x" << testField.getHeight() << endl;
+        cout << "Ball location: " << testField.ball.getX() << "," << testField.ball.getY() << endl;
+        cout << "Left Paddle location: " << testField.leftPaddle.getX() << "," << testField.leftPaddle.getY() << endl;
+        cout << "Right Paddle location: " << testField.rightPaddle.getX() << "," << testField.rightPaddle.getY() << endl;
+
+        testField = Field(900, 600);
+        testField.initalizeBall();
+        testField.initalizePaddles();
+        cout << "Custom field size: " << testField.getWidth() << "x" << testField.getHeight() << endl;
+        cout << "Ball location: " << testField.ball.getX() << "," << testField.ball.getY() << endl;
+        cout << "Left Paddle location: " << testField.leftPaddle.getX() << "," << testField.leftPaddle.getY() << endl;
+        cout << "Right Paddle location: " << testField.rightPaddle.getX() << "," << testField.rightPaddle.getY() << endl;
+
+
+    }
+
+    if (COLISION_TESTING) {
     }
 
     if (GAME_MECHANICS_TESTING) {
-
     }
 
     if (PLAYER_DATA_TESTING) {
-
     }
 
     //cin >> endPrgm;
