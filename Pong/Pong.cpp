@@ -14,8 +14,8 @@ using namespace std;
 int main() {
 
     const bool MOVEMENT_TESTING = false;
-    const bool FIELD_TESTING = true;
-    const bool COLISION_TESTING = false;
+    const bool FIELD_TESTING = false;
+    const bool COLISION_TESTING = true;
     const bool GAME_MECHANICS_TESTING = false;
     const bool PLAYER_DATA_TESTING = false;
 
@@ -127,12 +127,20 @@ int main() {
     }
 
     if (COLISION_TESTING) {
+        Field collisionField = Field();
+        collisionField.initalizeBall();
+        collisionField.ball.setPos(5,2);
+
+
+
     }
 
     if (GAME_MECHANICS_TESTING) {
+
     }
 
     if (PLAYER_DATA_TESTING) {
+    
     }
 
     //cin >> endPrgm;

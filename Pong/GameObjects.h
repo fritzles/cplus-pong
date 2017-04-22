@@ -14,10 +14,6 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 
 #include "Colors.h"
 
-
-//color BLACK = color{ 0, 0, 0 };
-//color WHITE(255, 255, 255 );
-
 const static double PI = 3.14159265;
 
 enum PaddleDirection { Up, Down };
@@ -31,10 +27,12 @@ public:
     Agent();
     ~Agent();
 
+    // setters
     void setcolor(color);
     void setX(double);
     void setY(double);
 
+    // getters
     color getcolor() const;
     double getX() const;
     double getY() const;
@@ -57,10 +55,12 @@ public:
     Ball(double, color);
     ~Ball();
 
+    // setters
     void setAngle(int);
     void setSpeed(double);
     void setPos(int, int);
 
+    // getters
     int getAngle() const;
     double getSpeed() const;
 
@@ -82,16 +82,18 @@ public:
     Paddle(int, double, double, color);
     ~Paddle();
 
-    virtual void move() override;
-
+    // setters
     void setPaddleLocation(int, int);
     void setDirection(PaddleDirection);
     void setSpeed(double);
 
+    // getters
     int getPoints() const;
     int getLength() const;
     int getWidth() const;
     double getSpeed() const;
+
+    virtual void move() override;
 
 private:
     int points, length, width;
@@ -115,13 +117,16 @@ public:
 
     ~Field();
 
+    // setters
+    // make and place ball on field
     void initalizePaddles();
     void initalizePaddles(Paddle, Paddle);
 
-    // setup ball on field
+    // make and place ball on field
     void initalizeBall();
     void initalizeBall(Ball);
 
+    // getters
     int getHeight() const;
     int getWidth() const;
     color getColor() const;
