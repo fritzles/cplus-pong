@@ -116,8 +116,8 @@ void Gameplay::gameOver(){
 }
 
 void Gameplay::gameStart(){
-    field.leftPaddle.leftPaddle.setPaddleLocation(0, height / 2);
-    field.rightPaddle.setPaddleLocation(width - rightPaddle.getWidth(), height / 2);
+    field.leftPaddle.setPaddleLocation(0, field.getHeight() / 2);
+    field.rightPaddle.setPaddleLocation(field.getWidth() - field.rightPaddle.getWidth(), field.getHeight() / 2);
     field.ball.setPos(0,0);
 
     player1Score = 0;
@@ -130,4 +130,8 @@ void Gameplay::score(int player){
     } else {
         player2Score++;
     }
+}
+
+string Gameplay::getScore() {
+    return to_string(player1Score) + " - " + to_string(player2Score);
 }

@@ -20,6 +20,9 @@ public:
     void setField();
     void setField(Field);
 
+    //getters
+    string getScore();
+
     /**
     R: 
     M: 
@@ -71,12 +74,13 @@ public:
 
     void gameOver();
     void gameStart();
-    void score();
+    void score(int);
+
+    Field field;
+    Player player1, player2;
 
 private:
-    Field field;
 
-    Player player1, player2;
     int player1Score, player2Score;
 
 };

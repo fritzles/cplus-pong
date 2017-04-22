@@ -8,6 +8,7 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 #include <vector>
 
 #include "GameObjects.h"
+#include "Gameplay.h"
 
 using namespace std;
 
@@ -15,9 +16,12 @@ int main() {
 
     const bool MOVEMENT_TESTING = false;
     const bool FIELD_TESTING = false;
-    const bool COLISION_TESTING = true;
+    const bool COLISION_TESTING = false;
     const bool GAME_MECHANICS_TESTING = false;
     const bool PLAYER_DATA_TESTING = false;
+    const bool SCORING_TESTING = false;
+    const bool SETUP_TESTING = false;
+    const bool GAME_OVER_TESTING = true;
 
     string endPrgm;
     
@@ -141,6 +145,36 @@ int main() {
 
     if (PLAYER_DATA_TESTING) {
     
+    }
+
+    if (SCORING_TESTING) {
+        Gameplay g = Gameplay();
+        g.score(0);
+        cout << g.getScore() << endl;
+        g.score(1);
+        cout << g.getScore() << endl;
+    }
+
+    if (SETUP_TESTING) {
+        Gameplay g2 = Gameplay();
+        g2.gameStart();
+        cout << g2.field.ball.getX() << "-" << g2.field.ball.getY() << endl;
+        cout << g2.field.leftPaddle.getX() << "-" << g2.field.leftPaddle.getY() << endl;
+        g2.field.leftPaddle.setX(25);
+        cout << g2.field.leftPaddle.getX() << "-" << g2.field.leftPaddle.getY() << endl;
+        g2.gameStart();
+        cout << g2.field.leftPaddle.getX() << "-" << g2.field.leftPaddle.getY() << endl;
+    }
+
+    if (GAME_OVER_TESTING) {
+        Gameplay g3 = Gameplay();
+        g3.gameStart();
+        g3.score(0);
+        g3.player1.loadData("jordy");
+        cout << g3.player1.getGamesWon() << endl;
+        g3.player2.loadData("micoo");
+        g3.gameOver();
+        cout << g3.player1.getGamesWon() << endl;
     }
 
     //cin >> endPrgm;
