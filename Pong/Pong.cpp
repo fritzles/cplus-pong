@@ -205,6 +205,10 @@ int main() {
         g3.score(0);
         g3.player1.loadData("jordy");
         cout << g3.player1.getGamesWon() << endl;
+        g3.player1.setGamesWon(10);
+        cout << g3.player1.getGamesWon() << endl;
+        g3.player1.setGamesPlayed(11);
+        cout << g3.player1.getGamesPlayed() << endl;
         g3.player2.loadData("micoo");
         g3.gameOver();
         cout << g3.player1.getGamesWon() << endl;
