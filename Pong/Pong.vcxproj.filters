@@ -41,7 +41,7 @@
     <ClInclude Include="Graphics.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Gameplay.h">
+    <ClInclude Include="Gameplay.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

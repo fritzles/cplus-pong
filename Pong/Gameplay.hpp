@@ -7,8 +7,8 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 #ifndef GAMEPLAY_H
 #define GAMEPLAY_H
 
-#include "GameObjects.h"
-#include "Player.h"
+#include "GameObjects.hpp"
+#include "Player.hpp"
 
 class Gameplay
 {

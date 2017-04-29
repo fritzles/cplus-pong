@@ -4,7 +4,7 @@ Pong: Gameplay Implementation
 Jordan Guzak, Michael Fritz, Chris Bracky
 */
 
-#include "Gameplay.h"
+#include "Gameplay.hpp"
 
 Gameplay::Gameplay() {
 
