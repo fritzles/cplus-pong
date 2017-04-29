@@ -33,7 +33,6 @@ Agent::Agent() {
 
 Agent::~Agent() { }
 
-/** setters and getters */
 void Agent::setcolor(color c) {
     objColor.r = c.r;
     objColor.g = c.g;
@@ -60,9 +59,6 @@ double Agent::getY() const {
     return yPos;
 }
 
-// ***************************
-//  Ball
-
 Ball::Ball() {
     speed = 1;
     angle = 0;
@@ -75,9 +71,7 @@ Ball::Ball() {
     objColor.b = 255;
 }
 
-/**
-R: double diameter
-*/
+
 Ball::Ball(double d) {
     speed = 1;
     angle = 0;
@@ -90,9 +84,6 @@ Ball::Ball(double d) {
     objColor.b = 255;
 }
 
-/**
-R: double diameter, struct color
-*/
 Ball::Ball(double d, color c) {
     speed = 1;
     angle = 0;
@@ -161,9 +152,6 @@ Paddle::Paddle() {
     objColor.b = 255;
 }
 
-/**
-R: int length, double x, double y
-*/
 Paddle::Paddle(int l, double x, double y) {
     points = 0;
     length = l;
@@ -178,9 +166,6 @@ Paddle::Paddle(int l, double x, double y) {
     objColor.b = 255;
 }
 
-/**
-R: int length, double x, double y, struct color
-*/
 Paddle::Paddle(int l, double x, double y, color c) {
     points = 0;
     length = l;
@@ -247,9 +232,6 @@ Field::Field() {
     //fieldColor = BLACK;
 }
 
-/**
-R: int width, int height
-*/
 Field::Field(int w, int h) {
     if (w > 0 && h > 0) {
         width = w;
@@ -265,9 +247,6 @@ Field::Field(int w, int h) {
     fieldColor.b = 0;
 }
 
-/**
-R: int width, int height, struct color
-*/
 Field::Field(int w, int h, color c) {
     if (w > 0 && h > 0) {
         width = w;

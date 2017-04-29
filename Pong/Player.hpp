@@ -37,11 +37,12 @@ public:
     void setGamesPlayed(int);
     void setGamesWon(int);
 
+    int gamesPlayed;
+    int gamesWon;
 private:
     //these are variables
     string name;
-    int gamesPlayed;
-    int gamesWon;
+
 };
 
 #endif // !PLAYER_H

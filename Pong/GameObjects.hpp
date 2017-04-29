@@ -50,8 +50,21 @@ protected:
 class Ball : public Agent
 {
 public:
+    double  diameter;
     Ball();
+
+    /**
+    R: diameter
+    M:
+    E:
+    */
     Ball(double);
+
+    /**
+    R: diameter and color
+    M:
+    E:
+    */
     Ball(double, color);
     ~Ball();
 
@@ -68,7 +81,7 @@ public:
 
 private:
     int angle;
-    double speed, diameter;
+    double speed;
 
 };
 
@@ -78,7 +91,19 @@ class Paddle : public Agent
 {
 public:
     Paddle();
+
+    /**
+    R: length, x, y
+    M:
+    E:
+    */
     Paddle(int, double, double);
+
+    /**
+    R: length, x, y, color
+    M:
+    E:
+    */
     Paddle(int, double, double, color);
     ~Paddle();
 
@@ -112,7 +137,19 @@ public:
     Ball ball;
 
     Field();
+
+    /**
+    R: width, height
+    M: none
+    E: none
+    */
     Field(int, int);
+    
+    /**
+    R: width, height, color
+    M: none
+    E: none
+    */
     Field(int, int, color);
 
     ~Field();
