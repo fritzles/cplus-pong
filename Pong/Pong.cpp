@@ -4,23 +4,26 @@ Pong
 Jordan Guzak, Michael Fritz, Chris Bracky
 */
 
-
 #include <vector>
 
-#include "GameObjects.hpp"
 #include "Graphics.hpp"
+#include "Gameplay.hpp"
+
 
 using namespace std;
 
 // global constants
+const bool GRAPHICS_MODE = true;
+
 const bool MOVEMENT_TESTING = false;
 const bool FIELD_TESTING = false;
 const bool COLISION_TESTING = false;
-const bool GAME_MECHANICS_TESTING = false;
-const bool PLAYER_DATA_TESTING = false;
-const bool GRAPHICS_MODE = true;
+const bool SCORING_TESTING = false;
+const bool SETUP_TESTING = false;
+const bool GAME_OVER_TESTING = true;
 
-enum GameState{ Menu, Play,  };
+enum GameState{ Menu, Play  };
+
 
 // global variables
 GLdouble width, height;
@@ -40,8 +43,7 @@ void initGL() {
     glColor3f(0, 0, 1);
 }
 
-/* Handler for window-repaint event. Call back when the window first appears and
-whenever the window needs to be re-painted. */
+// called over and over
 void display() {
 
     glViewport(0, 0, width, height);
@@ -73,6 +75,7 @@ void kbd(unsigned char key, int x, int y)
         glColor3f(1, 0, 0);
     }
 
+
     glutPostRedisplay();
 
     return;
@@ -100,7 +103,6 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
-    //r.setTopLeft(x, y);
 
     glutPostRedisplay();
 }
@@ -257,23 +259,80 @@ int main(int argc, char** argv) {
 
         if (COLISION_TESTING) {
             Field collisionField = Field();
+            Gameplay game = Gameplay();
+            game.setField(collisionField);
             collisionField.initalizeBall();
-            collisionField.ball.setPos(5, 2);
 
+            // bottom collision test
+            cout << "\nBottom collision Test:" << endl;
+            collisionField.ball.setPos(5, 1);
+            collisionField.ball.setAngle(270);
+            cout << "Collision: " << game.ballFieldYTouch(collisionField.ball, collisionField) << endl;
+            collisionField.ball.move();
+            cout << "Collision: " << game.ballFieldYTouch(collisionField.ball, collisionField) << endl;
 
+            // top collision test
+            cout << "\nTop collision Test:" << endl;
+            collisionField.ball.setPos(5, collisionField.getHeight() - 1);
+            collisionField.ball.setAngle(90);
+            cout << "Collision: " << game.ballFieldYTouch(collisionField.ball, collisionField) << endl;
+            collisionField.ball.move();
+            cout << "Collision: " << game.ballFieldYTouch(collisionField.ball, collisionField) << endl;
 
+            // left collision test
+            cout << "\nLeft collision Test:" << endl;
+            collisionField.ball.setPos(1, 5);
+            collisionField.ball.setAngle(180);
+            cout << "Collision: " << game.ballFieldTouchLeft(collisionField.ball, collisionField) << endl;
+            collisionField.ball.move();
+            cout << "Collision: " << game.ballFieldTouchLeft(collisionField.ball, collisionField) << endl;
+
+            // right collision test
+            cout << "\nRight collision Test:" << endl;
+            collisionField.ball.setPos(collisionField.getWidth() - 1, 5);
+            collisionField.ball.setAngle(0);
+            cout << "Collision: " << game.ballFieldTouchRight(collisionField.ball, collisionField) << endl;
+            collisionField.ball.move();
+            cout << "Collision: " << game.ballFieldTouchRight(collisionField.ball, collisionField) << endl;
+
+            collisionField.initalizePaddles();
         }
 
-        if (GAME_MECHANICS_TESTING) {
-
+        if (SCORING_TESTING) {
+            Gameplay g = Gameplay();
+            g.score(0);
+            cout << g.getScore() << endl;
+            g.score(1);
+            cout << g.getScore() << endl;
         }
 
-        if (PLAYER_DATA_TESTING) {
+        if (SETUP_TESTING) {
+            Gameplay g2 = Gameplay();
+            g2.gameStart();
+            cout << g2.field.ball.getX() << "-" << g2.field.ball.getY() << endl;
+            cout << g2.field.leftPaddle.getX() << "-" << g2.field.leftPaddle.getY() << endl;
+            g2.field.leftPaddle.setX(25);
+            cout << g2.field.leftPaddle.getX() << "-" << g2.field.leftPaddle.getY() << endl;
+            g2.gameStart();
+            cout << g2.field.leftPaddle.getX() << "-" << g2.field.leftPaddle.getY() << endl;
+        }
 
+        if (GAME_OVER_TESTING) {
+            Gameplay g3 = Gameplay();
+            g3.gameStart();
+            g3.score(0);
+            g3.player1.loadData("jordy");
+            cout << g3.player1.getGamesWon() << endl;
+            g3.player1.setGamesWon(10);
+            cout << g3.player1.getGamesWon() << endl;
+            g3.player1.setGamesPlayed(11);
+            cout << g3.player1.getGamesPlayed() << endl;
+            g3.player2.loadData("micoo");
+            g3.gameOver();
+            cout << g3.player1.getGamesWon() << endl;
         }
     }
 
-    //cin >> endPrgm;
     cout << "bye" << endl;
 
     return 0;
