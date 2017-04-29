@@ -41,14 +41,10 @@ void Player::loadData(string playerName) {
         player << gamesWon << " " << gamesPlayed;
         player.close();
 
-<<<<<<< HEAD
-    } else {    // use existing file
-        int test, test2;
-=======
-    }
+
+    } 
     else
     {    // use existing file
->>>>>>> refs/remotes/origin/collisionTesting
         player >> gamesWon;
         player >> gamesPlayed;
         player.close();
