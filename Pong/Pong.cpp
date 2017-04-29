@@ -9,31 +9,44 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 #include "Graphics.hpp"
 #include "Gameplay.hpp"
 
-
 using namespace std;
 
 // global constants
 const bool GRAPHICS_MODE = true;
 
+// text based testing constants
 const bool MOVEMENT_TESTING = false;
 const bool FIELD_TESTING = false;
 const bool COLISION_TESTING = false;
 const bool SCORING_TESTING = false;
 const bool SETUP_TESTING = false;
-const bool GAME_OVER_TESTING = true;
+const bool GAME_OVER_TESTING = false;
 
-enum GameState{ Menu, Play  };
+// graphical game debug constants
+const bool GAME_STATE_DEBUG = true;
 
+enum GameState{ Start, Menu, FieldSetup, Play, Pause, GameOver, Settings };
 
 // global variables
+GameState currentState;
 GLdouble width, height;
-int wd;
+int wd, mouseX, mouseY;
 
+color menuTextColor{ 255, 255, 255 };
+
+Gameplay game;
+Player player1, player2;
+Field gameField;
+Ball gameBall;
+Paddle paddle1, paddle2;
 
 
 void init() {
     width = 700;
     height = 500;
+
+    currentState = Start;
+    mouseX = mouseY = -1;
 
 }
 
@@ -43,9 +56,118 @@ void initGL() {
     glColor3f(0, 0, 1);
 }
 
-// called over and over
-void display() {
+// **************************
+// display helper functions
+void displayStart() {
+    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    if (GAME_STATE_DEBUG) {
+        string state = "Start";
+        glRasterPos2i(10, height - 10);
+        for (int i = 0; i < state.length(); ++i) {
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
+        }
+    }
 
+    string title = "Welcome to Pong";
+
+    glRasterPos2i(width / 2 + title.length(), height / 2);
+    for (int i = 0; i < title.length(); ++i) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, title[i]);
+    }
+
+    /*
+    string message = "Click anywhere to begin";
+    glRasterPos2i(width / 2 - title.length() / 2, height / 2 - 10);
+    for (int i = 0; i < message.length(); ++i) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, message[i]);
+    }
+    */
+}
+
+void displayMenu() {
+    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    if (GAME_STATE_DEBUG) {
+        string state = "Menu";
+        glRasterPos2i(10, height - 10);
+        for (int i = 0; i < state.length(); ++i) {
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
+        }
+    }
+    
+}
+
+void displayFieldSetup() {
+    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    if (GAME_STATE_DEBUG) {
+        string state = "Field Setup";
+        glRasterPos2i(10, height - 10);
+        for (int i = 0; i < state.length(); ++i) {
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
+        }
+    }
+}
+
+void displayPlay() {
+    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    if (GAME_STATE_DEBUG) {
+        string state = "Play";
+        glRasterPos2i(10, height - 10);
+        for (int i = 0; i < state.length(); ++i) {
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
+        }
+    }
+}
+
+void displayPause() {
+    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    if (GAME_STATE_DEBUG) {
+        string state = "Pause";
+        glRasterPos2i(10, height - 10);
+        for (int i = 0; i < state.length(); ++i) {
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
+        }
+    }
+}
+
+void displayGameOver() {
+    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    if (GAME_STATE_DEBUG) {
+        string state = "Game Over";
+        glRasterPos2i(10, height - 10);
+        for (int i = 0; i < state.length(); ++i) {
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
+        }
+    }
+
+    /*
+    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    string message = "Game Over";
+    glRasterPos2i(220, height / 2);
+    for (int i = 0; i < message.length(); ++i) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, message[i]);
+    }
+    */
+
+}
+
+void displaySettings() {
+    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+
+    if (GAME_STATE_DEBUG) {
+        string state = "Settings";
+        glRasterPos2i(10, height - 10);
+        for (int i = 0; i < state.length(); ++i) {
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
+        }
+    }
+}
+
+// **************************
+// main recalled display function
+void display() {
+    // for updating
+    width = glutGet(GLUT_WINDOW_WIDTH);
+    height = glutGet(GLUT_WINDOW_HEIGHT);
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -53,26 +175,101 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-
-
+    // state handling
+    switch (currentState)
+    {
+    case Start:
+        displayStart();
+        break;
+    case Menu:
+        displayMenu();
+        break;
+    case FieldSetup:
+        displayFieldSetup();
+        break;
+    case Play:
+        displayPlay();
+        break;
+    case Pause:
+        displayPause();
+        break;
+    case GameOver:
+        displayGameOver();
+        break;
+    case Settings:
+        displaySettings();
+        break;
+    default:
+        break;
+    }
 
     glFlush();
 }
 
+// **************************
+// cursor and keboard button handlers
 void kbd(unsigned char key, int x, int y)
 {
-    // escape
-    if (key == 27) {
-        glutDestroyWindow(wd);
-        exit(0);
-    }
+    // keboard input controls vary depending
+    //  on the current state of the program
+    switch (currentState)
+    {
+    case Start:
+        // esc
+        if (key == 27) {
+            glutDestroyWindow(wd);
+            exit(0);
+        }
+        if (key != 27) {
+            currentState = Menu;
+        }
+        break;
+    case Menu:
+        // esc
+        if (key == 27) {
+            glutDestroyWindow(wd);
+            exit(0);
+        }
+        break;
+    case FieldSetup:
+        // esc
+        if (key == 27) {
+            currentState = Menu;
+        }
+        break;
+    case Play:
+        // esc and enter for pausing the game
+        if (key == 27 || key == (unsigned)" ") {
+            currentState = Pause;
+        }
 
-    if (key == 'g') {
-        glColor3f(0, 1, 0);
-    }
+        // player 1 keyboard inputs
 
-    if (key == 'r') {
-        glColor3f(1, 0, 0);
+        // player 2 keyboard inputs
+
+
+
+        break;
+    case Pause:
+        // esc and enter for returning the game
+        if (key == 27) {
+            currentState = Play;
+        }
+        break;
+    case GameOver:
+        // any key
+        if (key != (unsigned)"") {
+            currentState = Menu;
+        }
+        break;
+    case Settings:
+        // esc
+        if (key == 27) {
+            currentState = Menu;
+        }
+        break;
+    default:
+        break;
     }
 
 
@@ -103,15 +300,52 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
-
+    switch (currentState)
+    {
+    case Menu:
+        break;
+    case FieldSetup:
+        break;
+    case Play:
+        break;
+    case GameOver:
+        break;
+    case Settings:
+        break;
+    default:
+        break;
+    }
     glutPostRedisplay();
 }
 
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        
+
+    switch (currentState)
+    {
+    case Start:
+        if (state == GLUT_DOWN) { // cursor click
+            currentState = Menu;
+        }
+        break;
+    case Menu:
+        break;
+    case FieldSetup:
+        break;
+    case Play:
+        break;
+    case GameOver:
+        break;
+    case Settings:
+        break;
+    default:
+        break;
+    }
+    
+
+    if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) { // right click
+
     }
     glutPostRedisplay();
 }
@@ -123,8 +357,6 @@ void timer(int extra) {
 }
 
 int main(int argc, char** argv) {
-
-    string endPrgm;
 
     // full graphics game
     if (GRAPHICS_MODE) {
@@ -150,8 +382,7 @@ int main(int argc, char** argv) {
         glutTimerFunc(0, timer, 0);
 
         glutMainLoop();
-    }
-    else {
+    } else {
         // movement testing
         if (MOVEMENT_TESTING) {
 
