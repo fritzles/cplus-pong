@@ -5,7 +5,7 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 */
 
 
-#include "Player.h"
+#include "Player.hpp"
 
 #include <iostream>
 #include <fstream>

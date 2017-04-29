@@ -4,7 +4,7 @@ Pong: Game Object Implementations
 Jordan Guzak, Michael Fritz, Chris Bracky
 */
 
-#include "GameObjects.h"
+#include "GameObjects.hpp"
 
 // ***************************
 //  Global helper functions

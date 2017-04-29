@@ -12,7 +12,7 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 
 #include <iostream>
 
-#include "Colors.h"
+#include "Colors.hpp"
 
 const static double PI = 3.14159265;
 
