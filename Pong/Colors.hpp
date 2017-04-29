@@ -6,7 +6,7 @@
 
 #ifndef COLORS_H
 #define COLORS_H
-
+#include <string>
 
 struct color {
     int r;
@@ -16,7 +16,7 @@ struct color {
 };
 
 /*
-#include <string>
+
 
 struct color {
     int r;
