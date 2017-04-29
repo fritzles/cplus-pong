@@ -1,5 +1,5 @@
 /*
-    Jordan Guzak
+    Jordan Guzak, Michael Fritz, Chris Bracky
     CS 120 Pong Project
     Crayola Color Data Structure
 */
