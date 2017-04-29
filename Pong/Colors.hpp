@@ -1,7 +1,7 @@
 /*
-    Jordan Guzak, Michael Fritz, Chris Bracky
     CS 120 Pong Project
     Crayola Color Data Structure
+    Jordan Guzak, Michael Fritz, Chris Bracky
 */
 
 #ifndef COLORS_H
@@ -19,8 +19,6 @@ struct color {
 //color WHITE = { 255, 255, 255 };
 
 /*
-
-
 struct color {
     int r;
     int g;
