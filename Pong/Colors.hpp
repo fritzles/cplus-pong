@@ -15,6 +15,9 @@ struct color {
 
 };
 
+//color BLACK = { 0, 0, 0 };
+//color WHITE = { 255, 255, 255 };
+
 /*
 
 
@@ -24,8 +27,7 @@ struct color {
     int b;
 };
 
-color BLACK{ 0, 0, 0 };
-color WHITE{ 255, 255, 255 };
+
 
 // crayola colors
 const int NUM_CRAYOLA_COLORS = 60;

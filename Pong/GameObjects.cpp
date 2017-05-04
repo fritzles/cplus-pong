@@ -139,6 +139,12 @@ void Ball::move() {
     yPos += yUpdate;
 }
 
+void Ball::draw() const {
+    glBegin(GL_POINTS);
+    glVertex2i(getX(), getY());
+    glEnd();
+}
+
 // ***************************
 //  Paddle
 Paddle::Paddle() {
@@ -225,14 +231,17 @@ void Paddle::move() {
     else {
         yPos -= 1 * speed;
     }
+
+    cout << "woo" << endl;
 }
 
 void Paddle::draw() const {
-    glBegin(GL_TRIANGLE_FAN);
-    glColor3i(40, 40, 40);
-//    glVertex2i(25, 30);
-//    glVertex2i(25, 400);
-//    glVertex2i(50, 50);
+    glBegin(GL_QUADS);
+    glColor3f(objColor.r, objColor.g, objColor.b);
+    glVertex2i(getX(), getY());
+    glVertex2i(getX(), getY() + length*2);
+    glVertex2i(getX() + width*2, getY() + length*2);
+    glVertex2i(getX() + width*2, getY());
     glEnd();
 
 }
@@ -279,10 +288,10 @@ Field::~Field() { }
 
 /** setters and getters */
 void Field::initalizePaddles() {
-    leftPaddle = Paddle();
+//    leftPaddle = Paddle();
     leftPaddle.setPaddleLocation(0, height / 2);
 
-    rightPaddle = Paddle();
+//    rightPaddle = Paddle();
     rightPaddle.setPaddleLocation(width - rightPaddle.getWidth(), height / 2);
 }
 
@@ -296,7 +305,7 @@ void Field::initalizePaddles(Paddle l, Paddle r) {
 }
 
 void Field::initalizeBall() {
-    ball = Ball();
+//    ball = Ball();
     ball.setPos(width/2, height/2);
 }
 

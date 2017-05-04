@@ -33,6 +33,7 @@ GLdouble width, height;
 int wd, mouseX, mouseY;
 
 color menuTextColor{ 255, 255, 255 };
+color green{ 127,255,0 };
 
 Gameplay game;
 Player player1, player2;
@@ -48,7 +49,9 @@ void init() {
     currentState = Start;
     mouseX = mouseY = -1;
 
-
+    gameField.initalizePaddles();
+    gameField.initalizeBall();
+    gameField.leftPaddle.setcolor(green);
 
 }
 
@@ -88,7 +91,6 @@ void displayStart() {
 
 void displayMenu() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
-    paddle1.draw();
     if (GAME_STATE_DEBUG) {
         string state = "Menu";
         glRasterPos2i(10, height - 10);
@@ -96,7 +98,9 @@ void displayMenu() {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
-
+    gameField.ball.draw();
+    gameField.leftPaddle.draw();
+    gameField.rightPaddle.draw();
 }
 
 void displayFieldSetup() {
@@ -285,7 +289,7 @@ void kbd(unsigned char key, int x, int y)
 void kbdS(int key, int x, int y) {
     switch (key) {
     case GLUT_KEY_DOWN:
-
+            cout << "hm" << endl;
         break;
     case GLUT_KEY_LEFT:
 

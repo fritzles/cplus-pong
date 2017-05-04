@@ -79,6 +79,9 @@ public:
 
     virtual void move() override;
 
+    void draw() const;
+
+
 private:
     int angle;
     double speed;
