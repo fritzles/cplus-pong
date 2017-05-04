@@ -48,6 +48,8 @@ void init() {
     currentState = Start;
     mouseX = mouseY = -1;
 
+
+
 }
 
 // initialize OpenGL graphics
@@ -86,6 +88,7 @@ void displayStart() {
 
 void displayMenu() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    paddle1.draw();
     if (GAME_STATE_DEBUG) {
         string state = "Menu";
         glRasterPos2i(10, height - 10);
@@ -93,7 +96,7 @@ void displayMenu() {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
-    
+
 }
 
 void displayFieldSetup() {
@@ -116,6 +119,7 @@ void displayPlay() {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
+    paddle1.draw();
 }
 
 void displayPause() {
@@ -239,7 +243,7 @@ void kbd(unsigned char key, int x, int y)
         break;
     case Play:
         // esc and enter for pausing the game
-        if (key == 27 || key == (unsigned)" ") {
+        if (key == 27) {
             currentState = Pause;
         }
 
@@ -252,13 +256,13 @@ void kbd(unsigned char key, int x, int y)
         break;
     case Pause:
         // esc and enter for returning the game
-        if (key == 27) {
+        if (key == 27 || key == (unsigned)' ') {
             currentState = Play;
         }
         break;
     case GameOver:
         // any key
-        if (key != (unsigned)"") {
+        if (key) {
             currentState = Menu;
         }
         break;

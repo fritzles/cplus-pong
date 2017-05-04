@@ -4,7 +4,10 @@ Pong: Game Object Implementations
 Jordan Guzak, Michael Fritz, Chris Bracky
 */
 
+#include <GL/gl.h>
 #include "GameObjects.hpp"
+
+using namespace std;
 
 // ***************************
 //  Global helper functions
@@ -222,6 +225,16 @@ void Paddle::move() {
     else {
         yPos -= 1 * speed;
     }
+}
+
+void Paddle::draw() const {
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3i(40, 40, 40);
+//    glVertex2i(25, 30);
+//    glVertex2i(25, 400);
+//    glVertex2i(50, 50);
+    glEnd();
+
 }
 
 // ***************************
