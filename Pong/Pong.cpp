@@ -51,9 +51,15 @@ void init() {
 
     gameField.initalizePaddles();
     gameField.initalizeBall();
-    gameField.leftPaddle.setcolor(green);
-    gameField.ball.setSpeed(1);
-    gameField.ball.diameter = 20;
+//    gameField.leftPaddle.setcolor(green);
+    gameField.ball.setSpeed(.5);
+    gameField.ball.diameter = 5;
+//    gameField.ball.setAngle(180);
+    gameField.rightPaddle.setLength(20);
+    gameField.rightPaddle.setWidth(5);
+    gameField.leftPaddle.setLength(20);
+    gameField.leftPaddle.setWidth(5);
+//    gameField.ball.setX(gameField.leftPaddle.getX() + 3);
 
 }
 
@@ -122,11 +128,12 @@ void displayPlay() {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
-    gameField.checkCollision();
-    gameField.ball.draw();
-    gameField.ball.move();
     gameField.leftPaddle.draw();
     gameField.rightPaddle.draw();
+    gameField.ball.draw();
+    gameField.ball.move();
+    gameField.checkCollision();
+
 }
 
 void displayPause() {
@@ -138,9 +145,9 @@ void displayPause() {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
-    gameField.ball.draw();
     gameField.leftPaddle.draw();
     gameField.rightPaddle.draw();
+    gameField.ball.draw();
 }
 
 void displayGameOver() {
@@ -280,6 +287,11 @@ void kbd(unsigned char key, int x, int y)
         } else if(key == 108) {
             gameField.rightPaddle.setDirection(Down);
             gameField.rightPaddle.move();
+        }
+
+        if(key == 'r') {
+            gameField.initalizePaddles();
+            gameField.initalizeBall();
         }
 
         break;

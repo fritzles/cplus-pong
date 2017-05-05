@@ -82,7 +82,7 @@ public:
 
     void draw() const;
 
-    void isOverlapping(const Paddle &);
+    void isOverlapping(Paddle &);
 
 
 private:
@@ -117,6 +117,8 @@ public:
     void setPaddleLocation(int, int);
     void setDirection(PaddleDirection);
     void setSpeed(double);
+    void setLength(int);
+    void setWidth(int);
 
     // getters
     int getPoints() const;
