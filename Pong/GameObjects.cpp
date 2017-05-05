@@ -154,9 +154,13 @@ void Ball::draw() const {
 }
 
 void Ball::isOverlapping(const Paddle &p) {
-    if((floor(xPos + diameter/2) == p.getX()) || (floor(xPos - diameter/2) == p.getX())) {
-        objColor = { 127,255,0 };
-        speed = 0;
+    if((floor(xPos + diameter/2) >= p.getX()+5) && (floor(xPos - diameter/2) <= p.getX() - 5)) {
+        if((floor(yPos + diameter/2) == p.getY() + p.getLength()) || (floor(yPos - diameter/2) == p.getY() + p.getLength())) {
+            objColor = { 127,255,0 };
+            setSpeed(speed + .01);
+            setAngle(angle + 180);
+        }
+
 //        cout << "stop" << endl;
 
     }
