@@ -136,6 +136,7 @@ void Ball::move() {
     xPos += xUpdate;
     yPos += yUpdate;
 
+//    cout << xPos << " " << yPos << endl;
 }
 
 void Ball::draw() const {
@@ -144,7 +145,7 @@ void Ball::draw() const {
     glColor3f(objColor.r, objColor.g, objColor.b);
     glVertex2i(getX(), getY());
     // edge vertices are outside color
-    for (int i = 0; i <= 720; ++i) {
+    for (int i = 0; i <= 360; ++i) {
         double radians = i * M_PI / 180.0;
         glVertex2i(getX() + diameter/2 * cos(radians),
                    getY() + diameter/2 * sin(radians));
@@ -155,8 +156,8 @@ void Ball::draw() const {
 void Ball::isOverlapping(const Paddle &p) {
     if((floor(xPos + diameter/2) == p.getX()) || (floor(xPos - diameter/2) == p.getX())) {
         objColor = { 127,255,0 };
-        setAngle(angle + 45);
-        cout << angle << endl;
+        speed = 0;
+//        cout << "stop" << endl;
 
     }
 //    cout << angle << endl;
@@ -243,13 +244,11 @@ double Paddle::getSpeed() const {
 /** override move function */
 void Paddle::move() {
     if (direction == Up) {
-        yPos += 1 * speed;
-    }
-    else {
         yPos -= 1 * speed;
     }
-
-    cout << "woo" << endl;
+    else {
+        yPos += 1 * speed;
+    }
 }
 
 void Paddle::draw() const {
@@ -347,9 +346,9 @@ color Field::getColor() const {
 }
 
 void Field::checkCollision() {
-    if(ball.getX() == getHeight() || ball.getX() == 0) {
-        ball.setSpeed(0);
-    }
+//    if(ball.getX() == getHeight() || ball.getX() == 0) {
+//        ball.setSpeed(0);
+//    }
     ball.isOverlapping(rightPaddle);
     ball.isOverlapping(leftPaddle);
 }

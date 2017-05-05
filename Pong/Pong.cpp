@@ -53,6 +53,7 @@ void init() {
     gameField.initalizeBall();
     gameField.leftPaddle.setcolor(green);
     gameField.ball.setSpeed(1);
+    gameField.ball.diameter = 20;
 
 }
 
@@ -121,11 +122,11 @@ void displayPlay() {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
+    gameField.checkCollision();
     gameField.ball.draw();
     gameField.ball.move();
     gameField.leftPaddle.draw();
     gameField.rightPaddle.draw();
-    gameField.checkCollision();
 }
 
 void displayPause() {
@@ -263,10 +264,23 @@ void kbd(unsigned char key, int x, int y)
         }
 
         // player 1 keyboard inputs
+        if (key == 119) {
+            gameField.leftPaddle.setDirection(Up);
+            gameField.leftPaddle.move();
+        }else if (key == 115) {
+            gameField.leftPaddle.setDirection(Down);
+            gameField.leftPaddle.move();
+        }
 
         // player 2 keyboard inputs
 
-
+        if(key == 111){
+            gameField.rightPaddle.setDirection(Up);
+            gameField.rightPaddle.move();
+        } else if(key == 108) {
+            gameField.rightPaddle.setDirection(Down);
+            gameField.rightPaddle.move();
+        }
 
         break;
     case Pause:
@@ -300,7 +314,8 @@ void kbd(unsigned char key, int x, int y)
 void kbdS(int key, int x, int y) {
     switch (key) {
     case GLUT_KEY_DOWN:
-            cout << "hm" << endl;
+        gameField.rightPaddle.setDirection(Down);
+        gameField.rightPaddle.move();
         break;
     case GLUT_KEY_LEFT:
 
@@ -309,7 +324,8 @@ void kbdS(int key, int x, int y) {
 
         break;
     case GLUT_KEY_UP:
-
+        gameField.rightPaddle.setDirection(Up);
+        gameField.rightPaddle.move();
         break;
     }
 
