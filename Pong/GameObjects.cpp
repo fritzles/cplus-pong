@@ -149,12 +149,11 @@ void Ball::draw() const {
 }
 
 void Ball::isOverlapping(Paddle &p) {
-//    cout << (xPos + (diameter/2))  << ":" << (p.getX() + p.getWidth()/2) << endl;
-    if(xPos == p.getX()) {
+    if((floor(xPos + diameter/2) == p.getX()) || (floor(xPos - diameter/2) == (p.getX() + p.getWidth()))) {
         if(((yPos + diameter/2) >= p.getY()) &&
            ((yPos - diameter/2) <= (p.getY() + p.getLength()))) {
             objColor = {25, 25, 112};
-            setAngle(angle + 180 + 45 + (rand()%20 +1));
+            setAngle(angle + 180 + (rand()%70 + 15));
             setSpeed(speed + .01);
         } else {
             objColor = {173, 255, 0};
@@ -358,17 +357,23 @@ color Field::getColor() const {
 }
 
 void Field::checkCollision() {
-    cout << ball.getY() << endl;
-    if(ball.getY() >= 499 || ball.getY() <= 0) {
-        ball.setAngle(ball.getAngle() + (360-90));
-    }
+//    cout << floor(ball.getY()) << endl;
+
     rightPaddle.setY(ball.getY() - 5);
     leftPaddle.setY(ball.getY() - 5);
     ball.isOverlapping(rightPaddle);
     ball.isOverlapping(leftPaddle);
-    if(ball.getX() > 600 || ball.getX() < 0) {
+//    if(ball.getX() > 600 || ball.getX() < 0) {
+////        ball.setSpeed(0);
+////        ball.setAngle(ball.getAngle() + (360-90));
 //        ball.setSpeed(0);
+//    }
+//    cout << (ball.getY() < 0) << endl;
+    if(ball.getY() > 499) {
         ball.setAngle(ball.getAngle() + (360-90));
-
+    } else if (ball.getY() < 0) {
+//        ball.setSpeed(0);
+        ball.setAngle(ball.getAngle() + 45);
+        cout << ball.getAngle() << endl;
     }
 }

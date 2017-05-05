@@ -53,8 +53,8 @@ void init() {
     gameField.initalizePaddles();
     gameField.initalizeBall();
 //    gameField.leftPaddle.setcolor(green);
-    gameField.ball.setSpeed(1);
-    gameField.ball.diameter = 10;
+    gameField.ball.setSpeed(.5);
+    gameField.ball.diameter = 5;
     gameField.ball.setAngle(180);
     gameField.rightPaddle.setLength(20);
     gameField.rightPaddle.setWidth(5);
@@ -342,8 +342,7 @@ void kbd(unsigned char key, int x, int y)
         }
 
         if(key == 'r') {
-            gameField.initalizePaddles();
-            gameField.initalizeBall();
+            gameField.rightPaddle.setY(20);
         }
 
         break;
