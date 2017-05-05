@@ -19,6 +19,8 @@ const static double PI = 3.14159265;
 enum PaddleDirection { Up, Down };
 enum ContactSide { Left, Right, Top, Bottom };
 
+class Paddle;
+
 // ***************************
 //  Agent
 class Agent
@@ -44,7 +46,6 @@ protected:
     color objColor;
 
 };
-
 // ***************************
 //  Ball
 class Ball : public Agent
@@ -80,6 +81,8 @@ public:
     virtual void move() override;
 
     void draw() const;
+
+    void isOverlapping(const Paddle &);
 
 
 private:
@@ -172,6 +175,8 @@ public:
     int getHeight() const;
     int getWidth() const;
     color getColor() const;
+
+    void checkCollision();
 
 
 private:

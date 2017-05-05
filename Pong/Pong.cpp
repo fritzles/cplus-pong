@@ -99,8 +99,10 @@ void displayMenu() {
         }
     }
     gameField.ball.draw();
+    gameField.ball.move();
     gameField.leftPaddle.draw();
     gameField.rightPaddle.draw();
+    gameField.checkCollision();
 }
 
 void displayFieldSetup() {

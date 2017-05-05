@@ -105,9 +105,7 @@ Ball::~Ball() {
 
 /** setters and getters */
 void Ball::setAngle(int a) {
-    if (0 <= a && a < 360) {
-        angle = a;
-    }
+    angle = a%360;
 }
 
 void Ball::setSpeed(double s) {
@@ -140,9 +138,27 @@ void Ball::move() {
 }
 
 void Ball::draw() const {
-    glBegin(GL_POINTS);
+    glBegin(GL_TRIANGLE_FAN);
+    // center vertex is fill color
+    glColor3f(objColor.r, objColor.g, objColor.b);
     glVertex2i(getX(), getY());
+    // edge vertices are outside color
+    for (int i = 0; i <= 720; ++i) {
+        double radians = i * M_PI / 180.0;
+        glVertex2i(getX() + diameter/2 * cos(radians),
+                   getY() + diameter/2 * sin(radians));
+    }
     glEnd();
+}
+
+void Ball::isOverlapping(const Paddle &p) {
+    if((floor(xPos + diameter/2) == p.getX()) || (floor(xPos - diameter/2) == p.getX())) {
+        objColor = { 127,255,0 };
+        setAngle(angle + 180);
+        cout << angle << endl;
+
+    }
+//    cout << angle << endl;
 }
 
 // ***************************
@@ -306,6 +322,9 @@ void Field::initalizePaddles(Paddle l, Paddle r) {
 
 void Field::initalizeBall() {
 //    ball = Ball();
+    ball.diameter = 10;
+    ball.setSpeed(.1);
+    ball.setAngle(0);
     ball.setPos(width/2, height/2);
 }
 
@@ -324,4 +343,9 @@ int Field::getWidth() const {
 
 color Field::getColor() const {
     return fieldColor;
+}
+
+void Field::checkCollision() {
+    ball.isOverlapping(rightPaddle);
+    ball.isOverlapping(leftPaddle);
 }
