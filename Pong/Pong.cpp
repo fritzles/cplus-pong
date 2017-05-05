@@ -5,6 +5,7 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 */
 
 #include <vector>
+#include <iostream>
 
 #include "Graphics.hpp"
 #include "Gameplay.hpp"
@@ -24,7 +25,7 @@ const bool SETUP_TESTING = false;
 const bool GAME_OVER_TESTING = false;
 
 // graphical game debug constants
-const bool GAME_STATE_DEBUG = true;
+const bool GAME_STATE_DEBUG = false;
 const bool UI_DEBUG = true;
 
 enum GameState{ Start, Menu, FieldSetup, Play, Pause, GameOver, Settings };
@@ -47,10 +48,12 @@ Paddle paddle1, paddle2;
 
 Button newGame_b("New Game", 150, 50, 325, 200);
 Button quitGame_b("Quit", 150, 50, 325, 350);
-
 Button playGame_b("Play Game", 150, 50, 325, 200);
-Button resumeGame_b("Resume Game", 150, 50, 325, 200);
+Button resumeGame_b("Resume Game", 170, 50, 320, 300);
+Button mainMenu_b("Main Menu", 170, 50, 320, 400);
 
+Button loadP1_b("Load Player 1", 170, 50, 85, 300);
+Button loadP2_b("Load Player 2", 170, 50, 535, 300);
 
 void init() {
     screen_width = 800;
@@ -76,12 +79,13 @@ void init() {
 
     playGame_b.setTextColor(menuTextColor);
     resumeGame_b.setTextColor(menuTextColor);
+    mainMenu_b.setTextColor(menuTextColor);
 }
 
 // initialize OpenGL graphics
 void initGL() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glColor3f(0, 0, 1);
+    glColor3ub(0, 0, 1);
 }
 
 // **************************
@@ -102,7 +106,7 @@ void displayCurrentState(string s) {
 }
 
 void displayStart() {
-    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    glColor3ub(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
         displayCurrentState("Start");
     }
@@ -128,7 +132,7 @@ void displayStart() {
 }
 
 void displayMenu() {
-    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    glColor3ub(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
         displayCurrentState("Menu");
     }
@@ -140,13 +144,10 @@ void displayMenu() {
     newGame_b.draw();
     quitGame_b.draw();
 
-
-
-
 }
 
 void displayFieldSetup() {
-    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    glColor3ub(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
         displayCurrentState("Field Setup");
     }
@@ -155,11 +156,14 @@ void displayFieldSetup() {
         displayMouseLocation();
     }
     playGame_b.draw();
+    loadP1_b.draw();
+    loadP2_b.draw();
+    mainMenu_b.draw();
 
 }
 
 void displayPlay() {
-    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    glColor3ub(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
         displayCurrentState("Play");
     }
@@ -176,7 +180,7 @@ void displayPlay() {
 }
 
 void displayPause() {
-    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    glColor3ub(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
         displayCurrentState("Pause");
     }
@@ -187,10 +191,12 @@ void displayPause() {
     gameField.leftPaddle.draw();
     gameField.rightPaddle.draw();
     gameField.ball.draw();
+
+    resumeGame_b.draw();
 }
 
 void displayGameOver() {
-    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    glColor3ub(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
         displayCurrentState("Game Over");
     }
@@ -199,8 +205,10 @@ void displayGameOver() {
         displayMouseLocation();
     }
 
+    mainMenu_b.draw();
+
     /*
-    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    glColor3ub(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     string message = "Game Over";
     glRasterPos2i(220, screen_height / 2);
     for (int i = 0; i < message.length(); ++i) {
@@ -211,7 +219,7 @@ void displayGameOver() {
 }
 
 void displaySettings() {
-    glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
+    glColor3ub(menuTextColor.r, menuTextColor.g, menuTextColor.b);
 
     if (GAME_STATE_DEBUG) {
         string state = "Settings";
@@ -272,10 +280,9 @@ void display() {
 }
 
 void reshape(int w, int h) {
-    if (w != screen_width || h != screen_height) {
-
+    if (glutGet(GLUT_SCREEN_WIDTH) != screen_width || glutGet(GLUT_SCREEN_HEIGHT) != screen_height) {
+        exit(0);
     }
-
 }
 
 // **************************
@@ -398,6 +405,7 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
+
     mouseX = x;
     mouseY = y;
 
@@ -420,10 +428,53 @@ void cursor(int x, int y) {
 
         break;
     case FieldSetup:
+        if (playGame_b.hasOverlap(mouseX, mouseY)) {
+            playGame_b.setTextColor(menuTextColorHover);
+        }
+        else {
+            playGame_b.setTextColor(menuTextColor);
+        }
+
+        if (loadP1_b.hasOverlap(mouseX, mouseY)) {
+            loadP1_b.setTextColor(menuTextColorHover);
+        }
+        else {
+            loadP1_b.setTextColor(menuTextColor);
+        }
+
+        if (loadP2_b.hasOverlap(mouseX, mouseY)) {
+            loadP2_b.setTextColor(menuTextColorHover);
+        }
+        else {
+            loadP2_b.setTextColor(menuTextColor);
+        }
+
+        if (mainMenu_b.hasOverlap(mouseX, mouseY)) {
+            mainMenu_b.setTextColor(menuTextColorHover);
+        }
+        else {
+            mainMenu_b.setTextColor(menuTextColor);
+        }
+
+
         break;
     case Play:
         break;
+    case Pause:
+        if (resumeGame_b.hasOverlap(mouseX, mouseY)) {
+            resumeGame_b.setTextColor(menuTextColorHover);
+        }
+        else {
+            resumeGame_b.setTextColor(menuTextColor);
+        }
+        break;
     case GameOver:
+        if (mainMenu_b.hasOverlap(mouseX, mouseY)) {
+            mainMenu_b.setTextColor(menuTextColorHover);
+        }
+        else {
+            mainMenu_b.setTextColor(menuTextColor);
+        }
         break;
     case Settings:
         break;
@@ -436,6 +487,8 @@ void cursor(int x, int y) {
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
+    
+
 
     switch (currentState)
     {
@@ -457,29 +510,41 @@ void mouse(int button, int state, int x, int y) {
 
         break;
     case FieldSetup:
-
         // start game
         if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && playGame_b.hasOverlap(x, y)) {
             currentState = Play;
         }
 
         // load player 1 data
-        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && loadP1_b.hasOverlap(x, y)) {
+            
         }
 
         // load player 2 data
-        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && loadP2_b.hasOverlap(x, y)) {
 
+        }
+
+        // main menu
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && mainMenu_b.hasOverlap(x, y)) {
+            currentState = Menu;
         }
 
         break;
     case Play:
         break;
     case Pause:
-
+        // resume game
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && resumeGame_b.hasOverlap(x, y)) {
+            currentState = Play;
+        }
         break;
     case GameOver:
+        // main menu
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && mainMenu_b.hasOverlap(x, y)) {
+            currentState = Menu;
+        }
+
         break;
     case Settings:
         break;

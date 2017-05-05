@@ -12,7 +12,7 @@ Button::Button(string n, int w, int h , int x, int y) {
     height = h;
     xPos = x;
     yPos = y;
-    buttonColor = color{ 61, 61, 61 };
+    buttonColor = color{ 0, 0, 0 };
     textColor = color{ 255, 255, 255 };
 }
 
@@ -22,7 +22,7 @@ void Button::draw() const {
 
     // draw box
     glBegin(GL_QUADS);
-    glColor3i(buttonColor.r, buttonColor.g, buttonColor.b);
+    glColor3ub(buttonColor.r, buttonColor.g, buttonColor.b);
     glVertex2i(xPos, yPos);
     glVertex2i(xPos, yPos + height);
     glVertex2i(xPos + width, yPos + height);
@@ -30,7 +30,7 @@ void Button::draw() const {
     glEnd();
 
     // draw text
-    glColor3f(textColor.r, textColor.g, textColor.b);
+    glColor3ub(textColor.r, textColor.g, textColor.b);
     glRasterPos2i(xPos + 10, yPos + 20);
     for (unsigned int i = 0; i < title.length(); ++i) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, title[i]);

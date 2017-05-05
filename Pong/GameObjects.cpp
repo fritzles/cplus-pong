@@ -137,7 +137,7 @@ void Ball::move() {
 void Ball::draw() const {
     glBegin(GL_TRIANGLE_FAN);
     // center vertex is fill color
-    glColor3f(objColor.r, objColor.g, objColor.b);
+    glColor3ub(objColor.r, objColor.g, objColor.b);
     glVertex2i(getX(), getY());
     // edge vertices are outside color
     for (int i = 0; i <= 360; ++i) {
@@ -264,7 +264,7 @@ void Paddle::move() {
 
 void Paddle::draw() const {
     glBegin(GL_QUADS);
-    glColor3f(objColor.r, objColor.g, objColor.b);
+    glColor3ub(objColor.r, objColor.g, objColor.b);
     glVertex2i(getX(), getY());
     glVertex2i(getX(), getY() + length);
     glVertex2i(getX() + width, getY() + length);
