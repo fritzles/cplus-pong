@@ -4,7 +4,7 @@ Pong: Game Object Implementations
 Jordan Guzak, Michael Fritz, Chris Bracky
 */
 
-#include <GL/gl.h>
+
 #include "GameObjects.hpp"
 
 using namespace std;

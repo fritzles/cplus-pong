@@ -18,7 +18,6 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
-//#include <GL\glut.h> // not sure why visual studio hates the capital letter folder
 #endif
 
 void init(void);
