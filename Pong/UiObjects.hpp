@@ -21,7 +21,7 @@ public:
     ~Button();
 
     void draw() const;
-    void setColor(color);
+    void setTextColor(color);
 
     bool hasOverlap(int, int);
 

@@ -9,9 +9,9 @@
 #include <string>
 
 struct color {
-    int r;
-    int g;
-    int b;
+    GLint r;
+    GLint g;
+    GLint b;
 
 };
 

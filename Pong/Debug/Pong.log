@@ -1,7 +1,8 @@
-﻿  UiObjects.cpp
+﻿  Pong.cpp
   Generating Code...
-  Compiling...
-  Pong.cpp
-  Generating Code...
+  Skipping... (no relevant changes detected)
+  UiObjects.cpp
+  Gameplay.cpp
+  GameObjects.cpp
   Pong.vcxproj -> C:\Users\user\Documents\GitHub\beer-pong\Pong\Debug\Pong.exe
   Pong.vcxproj -> C:\Users\user\Documents\GitHub\beer-pong\Pong\Debug\Pong.pdb (Partial PDB)

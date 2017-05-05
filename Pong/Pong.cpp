@@ -45,7 +45,11 @@ Field gameField;
 Ball gameBall;
 Paddle paddle1, paddle2;
 
-Button newGameButton("New Game", 50, 50, 425, 200);
+Button newGame_b("New Game", 150, 50, 325, 200);
+Button quitGame_b("Quit", 150, 50, 325, 350);
+
+Button playGame_b("Play Game", 150, 50, 325, 200);
+Button resumeGame_b("Resume Game", 150, 50, 325, 200);
 
 
 void init() {
@@ -67,7 +71,11 @@ void init() {
     gameField.leftPaddle.setWidth(5);
     gameField.leftPaddle.setY(398);
 //    gameField.ball.setX(gameField.leftPaddle.getX() + 3);
-    newGameButton.setColor(menuButtonColor);
+    newGame_b.setTextColor(menuTextColor);
+    quitGame_b.setTextColor(menuTextColor);
+
+    playGame_b.setTextColor(menuTextColor);
+    resumeGame_b.setTextColor(menuTextColor);
 }
 
 // initialize OpenGL graphics
@@ -129,7 +137,9 @@ void displayMenu() {
         displayMouseLocation();
     }
 
-    //newGameButton.draw();
+    newGame_b.draw();
+    quitGame_b.draw();
+
 
 
 
@@ -144,7 +154,7 @@ void displayFieldSetup() {
     if (UI_DEBUG) {
         displayMouseLocation();
     }
-
+    playGame_b.draw();
 
 }
 
@@ -394,12 +404,20 @@ void cursor(int x, int y) {
     switch (currentState)
     {
     case Menu:
-        if (newGameButton.hasOverlap(mouseX, mouseY)) {
-            newGameButton.setColor(menuTextColorHover);
+        if (newGame_b.hasOverlap(mouseX, mouseY)) {
+            newGame_b.setTextColor(menuTextColorHover);
         }
         else {
-            newGameButton.setColor(menuTextColor);
+            newGame_b.setTextColor(menuTextColor);
         }
+
+        if (quitGame_b.hasOverlap(mouseX, mouseY)) {
+            quitGame_b.setTextColor(menuTextColorHover);
+        }
+        else {
+            quitGame_b.setTextColor(menuTextColor);
+        }
+
         break;
     case FieldSetup:
         break;
@@ -427,10 +445,39 @@ void mouse(int button, int state, int x, int y) {
         }
         break;
     case Menu:
+        // start new game
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && newGame_b.hasOverlap(x,y)) {
+            currentState = FieldSetup;
+        }
+
+        // exit
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && quitGame_b.hasOverlap(x, y)) {
+            exit(0);
+        }
+
         break;
     case FieldSetup:
+
+        // start game
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && playGame_b.hasOverlap(x, y)) {
+            currentState = Play;
+        }
+
+        // load player 1 data
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+
+        }
+
+        // load player 2 data
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+
+        }
+
         break;
     case Play:
+        break;
+    case Pause:
+
         break;
     case GameOver:
         break;
@@ -463,7 +510,7 @@ int main(int argc, char** argv) {
         glutInitDisplayMode(GLUT_RGBA);
 
         glutInitWindowSize((int)screen_width, (int)screen_height);
-        glutInitWindowPosition(500, 500);
+        glutInitWindowPosition(250, 250);
 
         wd = glutCreateWindow("PONG");
 
