@@ -8,6 +8,7 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 
 #include "Graphics.hpp"
 #include "Gameplay.hpp"
+#include "UiObjects.hpp"
 
 using namespace std;
 
@@ -34,6 +35,8 @@ GLdouble screen_width, screen_height;
 int wd, mouseX, mouseY;
 
 color menuTextColor{ 255, 255, 255 };
+color menuTextColorHover{ 173, 219, 162 };
+color menuButtonColor{ 61, 61, 61 };
 color green{ 127,255,0 };
 
 Gameplay game;
@@ -41,6 +44,8 @@ Player player1, player2;
 Field gameField;
 Ball gameBall;
 Paddle paddle1, paddle2;
+
+Button newGameButton("New Game", 50, 50, 425, 200);
 
 
 void init() {
@@ -62,14 +67,13 @@ void init() {
     gameField.leftPaddle.setWidth(5);
     gameField.leftPaddle.setY(398);
 //    gameField.ball.setX(gameField.leftPaddle.getX() + 3);
-
+    newGameButton.setColor(menuButtonColor);
 }
 
 // initialize OpenGL graphics
 void initGL() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glColor3f(0, 0, 1);
-//    glColor3f(173, 255, 0);
 }
 
 // **************************
@@ -80,18 +84,19 @@ void displayMouseLocation() {
     for (unsigned int i = 0; i < pos.length(); ++i) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, pos[i]);
     }
+}
 
+void displayCurrentState(string s) {
+    glRasterPos2i(10, 10);
+    for (unsigned int i = 0; i < s.length(); ++i) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, s[i]);
+    }
 }
 
 void displayStart() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
-        string state = "Start";
-        glRasterPos2i(10, screen_height - 10);
-        for (unsigned int i = 0; i < state.length(); ++i) {
-            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
-        }
-
+        displayCurrentState("Start");
     }
 
     if (UI_DEBUG) {
@@ -117,16 +122,15 @@ void displayStart() {
 void displayMenu() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
-        string state = "Menu";
-        glRasterPos2i(10, screen_height - 10);
-        for (unsigned int i = 0; i < state.length(); ++i) {
-            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
-        }
+        displayCurrentState("Menu");
     }
 
     if (UI_DEBUG) {
         displayMouseLocation();
     }
+
+    //newGameButton.draw();
+
 
 
 }
@@ -134,11 +138,7 @@ void displayMenu() {
 void displayFieldSetup() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
-        string state = "Field Setup";
-        glRasterPos2i(10, screen_height - 10);
-        for (unsigned int i = 0; i < state.length(); ++i) {
-            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
-        }
+        displayCurrentState("Field Setup");
     }
 
     if (UI_DEBUG) {
@@ -151,11 +151,7 @@ void displayFieldSetup() {
 void displayPlay() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
-        string state = "Play";
-        glRasterPos2i(10, screen_height - 10);
-        for (unsigned int i = 0; i < state.length(); ++i) {
-            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
-        }
+        displayCurrentState("Play");
     }
 
     if (UI_DEBUG) {
@@ -172,11 +168,7 @@ void displayPlay() {
 void displayPause() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
-        string state = "Pause";
-        glRasterPos2i(10, screen_height - 10);
-        for (unsigned int i = 0; i < state.length(); ++i) {
-            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
-        }
+        displayCurrentState("Pause");
     }
     if (UI_DEBUG) {
         displayMouseLocation();
@@ -190,11 +182,7 @@ void displayPause() {
 void displayGameOver() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
-        string state = "Game Over";
-        glRasterPos2i(10, screen_height - 10);
-        for (unsigned int i = 0; i < state.length(); ++i) {
-            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
-        }
+        displayCurrentState("Game Over");
     }
 
     if (UI_DEBUG) {
@@ -217,7 +205,7 @@ void displaySettings() {
 
     if (GAME_STATE_DEBUG) {
         string state = "Settings";
-        glRasterPos2i(10, screen_height - 10);
+        glRasterPos2i(0, 0);
         for (unsigned int i = 0; i < state.length(); ++i) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
@@ -238,6 +226,7 @@ void display() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0.0, screen_width, screen_height, 0.0, -1.f, 1.f);
+    //glTranslatef(screen_width / 2 - gameField.getWidth() / 2, screen_height/2 - gameField.getHeight()/2, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -274,7 +263,7 @@ void display() {
 
 void reshape(int w, int h) {
     if (w != screen_width || h != screen_height) {
-        exit(0);
+
     }
 
 }
@@ -405,6 +394,12 @@ void cursor(int x, int y) {
     switch (currentState)
     {
     case Menu:
+        if (newGameButton.hasOverlap(mouseX, mouseY)) {
+            newGameButton.setColor(menuTextColorHover);
+        }
+        else {
+            newGameButton.setColor(menuTextColor);
+        }
         break;
     case FieldSetup:
         break;

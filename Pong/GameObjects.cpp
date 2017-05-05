@@ -154,7 +154,7 @@ void Ball::isOverlapping(Paddle &p) {
         if(((yPos + diameter/2) >= p.getY()) &&
            ((yPos - diameter/2) <= (p.getY() + p.getLength()))) {
             objColor = {25, 25, 112};
-            setAngle(angle + 180 + 45 + (rand()%20 +1));
+            setAngle(angle + 180 + 45 + p.getSpeed());
             setSpeed(speed + .01);
         } else {
             objColor = {173, 255, 0};

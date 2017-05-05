@@ -127,6 +127,7 @@
     <ClCompile Include="Gameplay.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Pong.cpp" />
+    <ClCompile Include="UiObjects.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjects.hpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="Gameplay.hpp" />
     <ClInclude Include="Graphics.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="UiObjects.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
