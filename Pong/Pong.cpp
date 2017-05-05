@@ -24,7 +24,7 @@ const bool GAME_OVER_TESTING = false;
 
 // graphical game debug constants
 const bool GAME_STATE_DEBUG = true;
-const bool UI_DEBUG = false;
+const bool UI_DEBUG = true;
 
 enum GameState{ Start, Menu, FieldSetup, Play, Pause, GameOver, Settings };
 
@@ -53,13 +53,14 @@ void init() {
     gameField.initalizePaddles();
     gameField.initalizeBall();
 //    gameField.leftPaddle.setcolor(green);
-    gameField.ball.setSpeed(.5);
-    gameField.ball.diameter = 5;
-//    gameField.ball.setAngle(180);
+    gameField.ball.setSpeed(5);
+    gameField.ball.diameter = 20;
+    gameField.ball.setAngle(180);
     gameField.rightPaddle.setLength(20);
     gameField.rightPaddle.setWidth(5);
     gameField.leftPaddle.setLength(20);
     gameField.leftPaddle.setWidth(5);
+    gameField.leftPaddle.setY(398);
 //    gameField.ball.setX(gameField.leftPaddle.getX() + 3);
 
 }
@@ -68,6 +69,7 @@ void init() {
 void initGL() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glColor3f(0, 0, 1);
+//    glColor3f(173, 255, 0);
 }
 
 // **************************

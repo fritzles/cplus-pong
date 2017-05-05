@@ -107,7 +107,7 @@ void Ball::setAngle(int a) {
 }
 
 void Ball::setSpeed(double s) {
-    if (s > 0) {
+    if (s >= 0) {
         speed = s;
     }
 }
@@ -155,6 +155,7 @@ void Ball::isOverlapping(Paddle &p) {
            ((yPos - diameter/2) <= (p.getY() + p.getLength()))) {
             objColor = {25, 25, 112};
             setAngle(angle + 180 + 45);
+            setSpeed(speed + .01);
         } else {
             objColor = {173, 255, 0};
         }
@@ -316,10 +317,11 @@ Field::~Field() { }
 void Field::initalizePaddles() {
 //    leftPaddle = Paddle();
     leftPaddle.setPaddleLocation(0, height / 2);
-//    leftPaddle.setSpeed(20);
+    leftPaddle.setSpeed(10);
 
 //    rightPaddle = Paddle();
     rightPaddle.setPaddleLocation(width - rightPaddle.getWidth(), height / 2);
+    rightPaddle.setSpeed(10);
 }
 
 void Field::initalizePaddles(Paddle l, Paddle r) {
@@ -333,8 +335,7 @@ void Field::initalizePaddles(Paddle l, Paddle r) {
 
 void Field::initalizeBall() {
 //    ball = Ball();
-    ball.diameter = 10;
-    ball.setSpeed(.1);
+    ball.setSpeed(.25);
     ball.setAngle(0);
     ball.setPos(width/2, height/2);
 }
@@ -357,10 +358,17 @@ color Field::getColor() const {
 }
 
 void Field::checkCollision() {
-    cout << ball.getX() << endl;
-    if(ball.getY() >= 499 || ball.getY() == 0) {
-        ball.setSpeed(0);
+    cout << ball.getY() << endl;
+    if(ball.getY() >= 499 || ball.getY() <= 0) {
+        ball.setAngle(ball.getAngle() + (360-90));
     }
+    rightPaddle.setY(ball.getY() - 5);
+    leftPaddle.setY(ball.getY() - 5);
     ball.isOverlapping(rightPaddle);
     ball.isOverlapping(leftPaddle);
+    if(ball.getX() > 600 || ball.getX() < 0) {
+//        ball.setSpeed(0);
+        ball.setAngle(ball.getAngle() + (360-90));
+
+    }
 }
