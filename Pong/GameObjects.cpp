@@ -337,12 +337,12 @@ void Field::initalizeBall() {
 //    ball = Ball();
     ball.setSpeed(.25);
     ball.setAngle(0);
-    ball.setPos(width/2, height/2);
+    ball.setPos(width/2, height/2 + ball.diameter);
 }
 
 void Field::initalizeBall(Ball b) {
     ball = b;
-    ball.setPos(width / 2, height / 2);
+    ball.setPos(width/2, height/2 + ball.diameter);
 }
 
 int Field::getHeight() const {

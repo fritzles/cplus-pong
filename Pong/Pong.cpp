@@ -50,10 +50,10 @@ Button newGame_b("New Game", 150, 50, 325, 200);
 Button quitGame_b("Quit", 150, 50, 325, 350);
 Button playGame_b("Play Game", 150, 50, 325, 200);
 Button resumeGame_b("Resume Game", 170, 50, 320, 300);
-Button mainMenu_b("Main Menu", 170, 50, 320, 400);
+Button mainMenu_b("Main Menu", 170, 50, 320, 550);
 
 Button loadP1_b("Load Player 1", 170, 50, 85, 300);
-Button loadP2_b("Load Player 2", 170, 50, 535, 300);
+Button loadP2_b("Load Player 2", 170, 50, 545, 300);
 
 void init() {
     screen_width = 800;
@@ -64,7 +64,6 @@ void init() {
 
     gameField.initalizePaddles();
     gameField.initalizeBall();
-//    gameField.leftPaddle.setcolor(green);
     gameField.ball.setSpeed(1);
     gameField.ball.diameter = 10;
     gameField.ball.setAngle(180);
@@ -72,8 +71,7 @@ void init() {
     gameField.rightPaddle.setWidth(5);
     gameField.leftPaddle.setLength(20);
     gameField.leftPaddle.setWidth(5);
-    gameField.leftPaddle.setY(398);
-//    gameField.ball.setX(gameField.leftPaddle.getX() + 3);
+    gameField.leftPaddle.setY(gameField.getHeight()/2);
     newGame_b.setTextColor(menuTextColor);
     quitGame_b.setTextColor(menuTextColor);
 
@@ -92,7 +90,7 @@ void initGL() {
 // display helper functions
 void displayMouseLocation() {
     string pos = to_string(mouseX) + "," + to_string(mouseY);
-    glRasterPos2i(screen_width/2 - pos.length()*4, screen_height - 10);
+    glRasterPos2i(screen_width/2 - pos.length()*4, 30);
     for (unsigned int i = 0; i < pos.length(); ++i) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, pos[i]);
     }
@@ -117,7 +115,7 @@ void displayStart() {
 
     string title = "Welcome to Pong";
 
-    glRasterPos2i(screen_width / 2 + title.length(), screen_height / 2);
+    glRasterPos2i(screen_width / 2 - title.length()*5, screen_height / 2);
     for (unsigned int i = 0; i < title.length(); ++i) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, title[i]);
     }
@@ -171,6 +169,8 @@ void displayPlay() {
     if (UI_DEBUG) {
         displayMouseLocation();
     }
+
+    glTranslatef(screen_width / 2 - gameField.getWidth() / 2, screen_height / 2 - gameField.getHeight() + 50, 0.0f);
     gameField.leftPaddle.draw();
     gameField.rightPaddle.draw();
     gameField.ball.draw();
@@ -187,11 +187,12 @@ void displayPause() {
     if (UI_DEBUG) {
         displayMouseLocation();
     }
-
+    glTranslatef(screen_width / 2 - gameField.getWidth() / 2, screen_height / 2 - gameField.getHeight() + 50, 0.0f);
     gameField.leftPaddle.draw();
     gameField.rightPaddle.draw();
     gameField.ball.draw();
 
+    glTranslatef(-(screen_width / 2 - gameField.getWidth() / 2), -(screen_height / 2 - gameField.getHeight() + 50), 0.0f);
     resumeGame_b.draw();
 }
 
@@ -244,7 +245,6 @@ void display() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0.0, screen_width, screen_height, 0.0, -1.f, 1.f);
-    //glTranslatef(screen_width / 2 - gameField.getWidth() / 2, screen_height/2 - gameField.getHeight()/2, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -487,8 +487,6 @@ void cursor(int x, int y) {
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
-    
-
 
     switch (currentState)
     {
@@ -535,7 +533,7 @@ void mouse(int button, int state, int x, int y) {
         break;
     case Pause:
         // resume game
-        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && resumeGame_b.hasOverlap(x, y)) {
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && resumeGame_b.hasOverlap(x, y-50)) {
             currentState = Play;
         }
         break;
