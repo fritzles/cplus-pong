@@ -52,6 +52,7 @@ void init() {
     gameField.initalizePaddles();
     gameField.initalizeBall();
     gameField.leftPaddle.setcolor(green);
+    gameField.ball.setSpeed(1);
 
 }
 
@@ -98,11 +99,6 @@ void displayMenu() {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
-    gameField.ball.draw();
-    gameField.ball.move();
-    gameField.leftPaddle.draw();
-    gameField.rightPaddle.draw();
-    gameField.checkCollision();
 }
 
 void displayFieldSetup() {
@@ -125,7 +121,11 @@ void displayPlay() {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
-    paddle1.draw();
+    gameField.ball.draw();
+    gameField.ball.move();
+    gameField.leftPaddle.draw();
+    gameField.rightPaddle.draw();
+    gameField.checkCollision();
 }
 
 void displayPause() {
@@ -137,6 +137,9 @@ void displayPause() {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
+    gameField.ball.draw();
+    gameField.leftPaddle.draw();
+    gameField.rightPaddle.draw();
 }
 
 void displayGameOver() {
@@ -240,6 +243,9 @@ void kbd(unsigned char key, int x, int y)
             glutDestroyWindow(wd);
             exit(0);
         }
+        if (key == 32) {
+            currentState = Play;
+        }
         break;
     case FieldSetup:
         // esc
@@ -250,6 +256,9 @@ void kbd(unsigned char key, int x, int y)
     case Play:
         // esc and enter for pausing the game
         if (key == 27) {
+            currentState = Pause;
+        }
+        if (key == 32) {
             currentState = Pause;
         }
 

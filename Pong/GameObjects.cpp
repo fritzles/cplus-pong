@@ -135,6 +135,7 @@ void Ball::move() {
     // rounding to compensate for math rounding errors
     xPos += xUpdate;
     yPos += yUpdate;
+
 }
 
 void Ball::draw() const {
@@ -154,7 +155,7 @@ void Ball::draw() const {
 void Ball::isOverlapping(const Paddle &p) {
     if((floor(xPos + diameter/2) == p.getX()) || (floor(xPos - diameter/2) == p.getX())) {
         objColor = { 127,255,0 };
-        setAngle(angle + 180);
+        setAngle(angle + 45);
         cout << angle << endl;
 
     }
@@ -346,6 +347,9 @@ color Field::getColor() const {
 }
 
 void Field::checkCollision() {
+    if(ball.getX() == getHeight() || ball.getX() == 0) {
+        ball.setSpeed(0);
+    }
     ball.isOverlapping(rightPaddle);
     ball.isOverlapping(leftPaddle);
 }
