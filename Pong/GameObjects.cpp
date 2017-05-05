@@ -4,7 +4,7 @@ Pong: Game Object Implementations
 Jordan Guzak, Michael Fritz, Chris Bracky
 */
 
-#include <GL/gl.h>
+
 #include "GameObjects.hpp"
 
 using namespace std;
@@ -99,9 +99,7 @@ Ball::Ball(double d, color c) {
     objColor.b = c.b;
 }
 
-Ball::~Ball() {
-
-}
+Ball::~Ball() { }
 
 /** setters and getters */
 void Ball::setAngle(int a) {
@@ -123,9 +121,7 @@ int Ball::getAngle() const {
     return angle;
 }
 
-double Ball::getSpeed() const {
-    return speed;
-}
+double Ball::getSpeed() const { return speed; }
 
 /** override move function */
 void Ball::move() {
@@ -153,8 +149,6 @@ void Ball::draw() const {
 }
 
 void Ball::isOverlapping(Paddle &p) {
-
-
 //    cout << (xPos + (diameter/2))  << ":" << (p.getX() + p.getWidth()/2) << endl;
     if(xPos == p.getX()) {
         if(((yPos + diameter/2) >= p.getY()) &&
@@ -171,7 +165,7 @@ void Ball::isOverlapping(Paddle &p) {
 //  Paddle
 Paddle::Paddle() {
     points = 0;
-    length = 10;
+    length = 20;
     width = 2;
     speed = 1;
     direction = Up;

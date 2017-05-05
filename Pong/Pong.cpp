@@ -24,12 +24,13 @@ const bool GAME_OVER_TESTING = false;
 
 // graphical game debug constants
 const bool GAME_STATE_DEBUG = true;
+const bool UI_DEBUG = false;
 
 enum GameState{ Start, Menu, FieldSetup, Play, Pause, GameOver, Settings };
 
 // global variables
 GameState currentState;
-GLdouble width, height;
+GLdouble screen_width, screen_height;
 int wd, mouseX, mouseY;
 
 color menuTextColor{ 255, 255, 255 };
@@ -43,8 +44,8 @@ Paddle paddle1, paddle2;
 
 
 void init() {
-    width = 700;
-    height = 500;
+    screen_width = 800;
+    screen_height = 600;
 
     currentState = Start;
     mouseX = mouseY = -1;
@@ -71,26 +72,40 @@ void initGL() {
 
 // **************************
 // display helper functions
+void displayMouseLocation() {
+    string pos = to_string(mouseX) + "," + to_string(mouseY);
+    glRasterPos2i(screen_width/2 - pos.length()*4, screen_height - 10);
+    for (unsigned int i = 0; i < pos.length(); ++i) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, pos[i]);
+    }
+
+}
+
 void displayStart() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
         string state = "Start";
-        glRasterPos2i(10, height - 10);
-        for (int i = 0; i < state.length(); ++i) {
+        glRasterPos2i(10, screen_height - 10);
+        for (unsigned int i = 0; i < state.length(); ++i) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
+
+    }
+
+    if (UI_DEBUG) {
+        displayMouseLocation();
     }
 
     string title = "Welcome to Pong";
 
-    glRasterPos2i(width / 2 + title.length(), height / 2);
-    for (int i = 0; i < title.length(); ++i) {
+    glRasterPos2i(screen_width / 2 + title.length(), screen_height / 2);
+    for (unsigned int i = 0; i < title.length(); ++i) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, title[i]);
     }
 
     /*
     string message = "Click anywhere to begin";
-    glRasterPos2i(width / 2 - title.length() / 2, height / 2 - 10);
+    glRasterPos2i(screen_width / 2 - title.length() / 2, screen_height / 2 - 10);
     for (int i = 0; i < message.length(); ++i) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, message[i]);
     }
@@ -101,32 +116,48 @@ void displayMenu() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
         string state = "Menu";
-        glRasterPos2i(10, height - 10);
-        for (int i = 0; i < state.length(); ++i) {
+        glRasterPos2i(10, screen_height - 10);
+        for (unsigned int i = 0; i < state.length(); ++i) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
+
+    if (UI_DEBUG) {
+        displayMouseLocation();
+    }
+
+
 }
 
 void displayFieldSetup() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
         string state = "Field Setup";
-        glRasterPos2i(10, height - 10);
-        for (int i = 0; i < state.length(); ++i) {
+        glRasterPos2i(10, screen_height - 10);
+        for (unsigned int i = 0; i < state.length(); ++i) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
+
+    if (UI_DEBUG) {
+        displayMouseLocation();
+    }
+
+
 }
 
 void displayPlay() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
         string state = "Play";
-        glRasterPos2i(10, height - 10);
-        for (int i = 0; i < state.length(); ++i) {
+        glRasterPos2i(10, screen_height - 10);
+        for (unsigned int i = 0; i < state.length(); ++i) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
+    }
+
+    if (UI_DEBUG) {
+        displayMouseLocation();
     }
     gameField.leftPaddle.draw();
     gameField.rightPaddle.draw();
@@ -140,11 +171,15 @@ void displayPause() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
         string state = "Pause";
-        glRasterPos2i(10, height - 10);
-        for (int i = 0; i < state.length(); ++i) {
+        glRasterPos2i(10, screen_height - 10);
+        for (unsigned int i = 0; i < state.length(); ++i) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
+    if (UI_DEBUG) {
+        displayMouseLocation();
+    }
+
     gameField.leftPaddle.draw();
     gameField.rightPaddle.draw();
     gameField.ball.draw();
@@ -154,16 +189,20 @@ void displayGameOver() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
         string state = "Game Over";
-        glRasterPos2i(10, height - 10);
-        for (int i = 0; i < state.length(); ++i) {
+        glRasterPos2i(10, screen_height - 10);
+        for (unsigned int i = 0; i < state.length(); ++i) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
+    }
+
+    if (UI_DEBUG) {
+        displayMouseLocation();
     }
 
     /*
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     string message = "Game Over";
-    glRasterPos2i(220, height / 2);
+    glRasterPos2i(220, screen_height / 2);
     for (int i = 0; i < message.length(); ++i) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, message[i]);
     }
@@ -176,23 +215,27 @@ void displaySettings() {
 
     if (GAME_STATE_DEBUG) {
         string state = "Settings";
-        glRasterPos2i(10, height - 10);
-        for (int i = 0; i < state.length(); ++i) {
+        glRasterPos2i(10, screen_height - 10);
+        for (unsigned int i = 0; i < state.length(); ++i) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
         }
     }
+
+    if (UI_DEBUG) {
+        displayMouseLocation();
+    }
+
+
 }
 
 // **************************
 // main recalled display function
 void display() {
     // for updating
-    width = glutGet(GLUT_WINDOW_WIDTH);
-    height = glutGet(GLUT_WINDOW_HEIGHT);
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, screen_width, screen_height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0.0, width, height, 0.0, -1.f, 1.f);
+    glOrtho(0.0, screen_width, screen_height, 0.0, -1.f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -225,6 +268,13 @@ void display() {
     }
 
     glFlush();
+}
+
+void reshape(int w, int h) {
+    if (w != screen_width || h != screen_height) {
+        exit(0);
+    }
+
 }
 
 // **************************
@@ -347,6 +397,9 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
+    mouseX = x;
+    mouseY = y;
+
     switch (currentState)
     {
     case Menu:
@@ -412,7 +465,7 @@ int main(int argc, char** argv) {
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_RGBA);
 
-        glutInitWindowSize((int)width, (int)height);
+        glutInitWindowSize((int)screen_width, (int)screen_height);
         glutInitWindowPosition(500, 500);
 
         wd = glutCreateWindow("PONG");
