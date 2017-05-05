@@ -99,9 +99,7 @@ Ball::Ball(double d, color c) {
     objColor.b = c.b;
 }
 
-Ball::~Ball() {
-
-}
+Ball::~Ball() { }
 
 /** setters and getters */
 void Ball::setAngle(int a) {
@@ -123,9 +121,7 @@ int Ball::getAngle() const {
     return angle;
 }
 
-double Ball::getSpeed() const {
-    return speed;
-}
+double Ball::getSpeed() const { return speed; }
 
 /** override move function */
 void Ball::move() {
@@ -157,7 +153,7 @@ void Ball::isOverlapping(const Paddle &p) {
     if((floor(xPos + diameter/2) >= p.getX()+5) && (floor(xPos - diameter/2) <= p.getX() - 5)) {
         if((floor(yPos + diameter/2) == p.getY() + p.getLength()) || (floor(yPos - diameter/2) == p.getY() + p.getLength())) {
             objColor = { 127,255,0 };
-            setSpeed(speed + .01);
+            setSpeed(speed + .02);
             setAngle(angle + 180);
         }
 
@@ -171,7 +167,7 @@ void Ball::isOverlapping(const Paddle &p) {
 //  Paddle
 Paddle::Paddle() {
     points = 0;
-    length = 10;
+    length = 20;
     width = 2;
     speed = 1;
     direction = Up;
@@ -258,10 +254,10 @@ void Paddle::move() {
 void Paddle::draw() const {
     glBegin(GL_QUADS);
     glColor3f(objColor.r, objColor.g, objColor.b);
-    glVertex2i(getX(), getY());
-    glVertex2i(getX(), getY() + length*2);
-    glVertex2i(getX() + width*2, getY() + length*2);
-    glVertex2i(getX() + width*2, getY());
+    glVertex2i(getX(), getY() - length/2);
+    glVertex2i(getX(), getY() + length/2);
+    glVertex2i(getX() + width*2, getY() + length/2);
+    glVertex2i(getX() + width*2, getY() - length/2);
     glEnd();
 
 }

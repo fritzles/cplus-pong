@@ -30,7 +30,7 @@ void Gameplay::checkContact() {
     }
 
     if (paddleBallTouch(field.rightPaddle, field.ball)) {
-
+        field.ball.setAngle(field.ball.getAngle() + 270 % 360);
     }
 
     if (ballFieldTouchLeft(field.ball, field)) {
@@ -99,7 +99,6 @@ bool Gameplay::paddleBallTouch(Paddle p, Ball b) const {
     }
     return false;
 }
-
 
 void Gameplay::gameOver(){
     if(player1Score > player2Score){
