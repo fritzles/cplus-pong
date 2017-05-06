@@ -272,6 +272,10 @@ void Paddle::draw() const {
 
 }
 
+void Paddle::point() {
+    points++;
+}
+
 // ***************************
 //  Field
 Field::Field() {
@@ -335,7 +339,7 @@ void Field::initalizePaddles(Paddle l, Paddle r) {
 void Field::initalizeBall() {
 //    ball = Ball();
     ball.setSpeed(.25);
-    ball.setAngle(0);
+    ball.setAngle(180 * rand()%2);
     ball.setPos(width/2, height/2);
 }
 
@@ -357,17 +361,9 @@ color Field::getColor() const {
 }
 
 void Field::checkCollision() {
-//    cout << floor(ball.getY()) << endl;
-
-    rightPaddle.setY(ball.getY() - 5);
-    leftPaddle.setY(ball.getY() - 5);
     ball.isOverlapping(rightPaddle);
     ball.isOverlapping(leftPaddle);
-//    if(ball.getX() > 600 || ball.getX() < 0) {
-////        ball.setSpeed(0);
-////        ball.setAngle(ball.getAngle() + (360-90));
-//        ball.setSpeed(0);
-//    }
+
 //    cout << (ball.getY() < 0) << endl;
     if(ball.getY() > 499) {
         ball.setAngle(ball.getAngle() + (360-90));
@@ -375,5 +371,15 @@ void Field::checkCollision() {
 //        ball.setSpeed(0);
         ball.setAngle(ball.getAngle() + 45);
         cout << ball.getAngle() << endl;
+    }
+
+    if(ball.getX() > 600) {
+        rightPaddle.point();
+        initalizePaddles();
+        initalizeBall();
+    }else if( ball.getX() < 0){
+        leftPaddle.point();
+        initalizePaddles();
+        initalizeBall();
     }
 }

@@ -151,7 +151,7 @@ void displayFieldSetup() {
 void displayPlay() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
-        string state = "Play";
+        string state = "P1: " + to_string(gameField.leftPaddle.getPoints()) + "   P2: " + to_string(gameField.rightPaddle.getPoints());
         glRasterPos2i(10, screen_height - 10);
         for (unsigned int i = 0; i < state.length(); ++i) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);
@@ -167,12 +167,16 @@ void displayPlay() {
     gameField.ball.move();
     gameField.checkCollision();
 
+    if(gameField.rightPaddle.getPoints() == 5 || gameField.leftPaddle.getPoints() == 5) {
+        currentState = GameOver;
+    }
+
 }
 
 void displayPause() {
     glColor3f(menuTextColor.r, menuTextColor.g, menuTextColor.b);
     if (GAME_STATE_DEBUG) {
-        string state = "Pause";
+        string state = "P1: " + to_string(gameField.leftPaddle.getPoints()) + "   P2: " + to_string(gameField.rightPaddle.getPoints());
         glRasterPos2i(10, screen_height - 10);
         for (unsigned int i = 0; i < state.length(); ++i) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, state[i]);

@@ -127,6 +127,8 @@ public:
     int getWidth() const;
     double getSpeed() const;
 
+    void point();
+
     virtual void move() override;
 
     void draw() const;
