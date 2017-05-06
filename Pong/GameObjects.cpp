@@ -137,7 +137,7 @@ void Ball::move() {
 void Ball::draw() const {
     glBegin(GL_TRIANGLE_FAN);
     // center vertex is fill color
-    glColor3f(objColor.r, objColor.g, objColor.b);
+    glColor3ub(objColor.r, objColor.g, objColor.b);
     glVertex2i(getX(), getY());
     // edge vertices are outside color
     for (int i = 0; i <= 360; ++i) {
@@ -149,11 +149,12 @@ void Ball::draw() const {
 }
 
 void Ball::isOverlapping(Paddle &p) {
+//    cout << (xPos + (diameter/2))  << ":" << (p.getX() + p.getWidth()/2) << endl;
     if((floor(xPos + diameter/2) == p.getX()) || (floor(xPos - diameter/2) == (p.getX() + p.getWidth()))) {
         if(((yPos + diameter/2) >= p.getY()) &&
            ((yPos - diameter/2) <= (p.getY() + p.getLength()))) {
             objColor = {25, 25, 112};
-            setAngle(angle + 180 + (rand()%70 + 15));
+            setAngle(angle + 180 + 45 + p.getSpeed());
             setSpeed(speed + .01);
         } else {
             objColor = {173, 255, 0};
@@ -263,7 +264,7 @@ void Paddle::move() {
 
 void Paddle::draw() const {
     glBegin(GL_QUADS);
-    glColor3f(objColor.r, objColor.g, objColor.b);
+    glColor3ub(objColor.r, objColor.g, objColor.b);
     glVertex2i(getX(), getY());
     glVertex2i(getX(), getY() + length);
     glVertex2i(getX() + width, getY() + length);
@@ -340,12 +341,12 @@ void Field::initalizeBall() {
 //    ball = Ball();
     ball.setSpeed(.25);
     ball.setAngle(180 * rand()%2);
-    ball.setPos(width/2, height/2);
+    ball.setPos(width/2, height/2 + ball.diameter/2);
 }
 
 void Field::initalizeBall(Ball b) {
     ball = b;
-    ball.setPos(width / 2, height / 2);
+    ball.setPos(width/2, height/2 + ball.diameter);
 }
 
 int Field::getHeight() const {

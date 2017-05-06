@@ -188,7 +188,7 @@ private:
     int height, width;
     color fieldColor;
 
-    int DEFAULT_FIELD_HEIGHT = 400;
+    int DEFAULT_FIELD_HEIGHT = 300;
     int DEFAULT_FIELD_WIDTH = 600;
 
 };
