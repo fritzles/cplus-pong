@@ -375,11 +375,11 @@ void Field::checkCollision() {
     }
 
     if(ball.getX() > 600) {
-        rightPaddle.point();
+        leftPaddle.point();
         initalizePaddles();
         initalizeBall();
     }else if( ball.getX() < 0){
-        leftPaddle.point();
+        rightPaddle.point();
         initalizePaddles();
         initalizeBall();
     }

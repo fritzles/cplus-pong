@@ -125,9 +125,11 @@ void Gameplay::gameStart(){
 
 void Gameplay::score(int player){
     if(player == 0) {
-        player1Score++;
-    } else {
         player2Score++;
+        field.rightPaddle.point();
+    } else {
+        player1Score++;
+        field.leftPaddle.point();
     }
 }
 

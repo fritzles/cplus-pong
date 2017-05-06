@@ -24,6 +24,8 @@ public:
     void setTextColor(color);
     void setText(string);
 
+    string getText() const;
+
     bool hasOverlap(int, int);
 
 private:

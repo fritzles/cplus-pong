@@ -54,3 +54,7 @@ bool Button::hasOverlap(int x, int y) {
 void Button::setText(string s) {
     title = s;
 }
+
+string Button::getText() const {
+    return title;
+}

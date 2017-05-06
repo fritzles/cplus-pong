@@ -30,6 +30,8 @@ const bool UI_DEBUG = true;
 
 enum GameState{ Start, Menu, FieldSetup, Play, Pause, GameOver, Settings };
 
+enum KeyboardInputMode{ notTyping, typing };
+
 // global variables
 GameState currentState;
 GLdouble screen_width, screen_height;
@@ -42,6 +44,7 @@ color green{ 127,255,0 };
 
 Gameplay game;
 Player player1, player2;
+bool player1Loaded, player2Loaded;
 Field gameField;
 Ball gameBall;
 Paddle paddle1, paddle2;
@@ -52,13 +55,29 @@ Button playGame_b("Play Game", 150, 50, 325, 200);
 Button resumeGame_b("Resume Game", 170, 50, 320, 300);
 Button mainMenu_b("Main Menu", 170, 50, 320, 550);
 
-Button loadP1_b("Load Player 1", 170, 50, 85, 300);
-Button loadP2_b("Load Player 2", 170, 50, 545, 300);
+Button nameP1_b("Enter Player Name", 190, 50, 55, 250);
+Button statsP1_b("", 190, 50, 55, 300);
+Button scoreP1_b("", 190, 50, 55, 300);
+
+Button nameP2_b("Enter Player Name", 190, 50, 515, 250);
+Button statsP2_b("", 190, 50, 515, 300);
+Button scoreP2_b("", 190, 50, 515, 300);
+
+Button winner("", 190, 50, 320, 150);
+
 Button playerStats_b("temp", 170, 50, 320, 550);
+
+KeyboardInputMode keyboardMode;
+string keyboardInput;
+int selectedTextBox;
 
 void init() {
     screen_width = 800;
     screen_height = 600;
+
+    keyboardMode = notTyping;
+    keyboardInput = "";
+    selectedTextBox = 0;
 
     currentState = Start;
     mouseX = mouseY = -1;
@@ -79,7 +98,19 @@ void init() {
     playGame_b.setTextColor(menuTextColor);
     resumeGame_b.setTextColor(menuTextColor);
     mainMenu_b.setTextColor(menuTextColor);
+    
+    nameP1_b.setTextColor(menuTextColor);
+    statsP1_b.setTextColor(menuTextColor);
+    scoreP1_b.setTextColor(menuTextColor);
+
+    nameP2_b.setTextColor(menuTextColor);
+    statsP2_b.setTextColor(menuTextColor);
+    scoreP2_b.setTextColor(menuTextColor);
+
+    player1Loaded = false;
+    player2Loaded = false;
     playerStats_b.setTextColor(menuTextColor);
+
 }
 
 // initialize OpenGL graphics
@@ -156,8 +187,17 @@ void displayFieldSetup() {
         displayMouseLocation();
     }
     playGame_b.draw();
-    loadP1_b.draw();
-    loadP2_b.draw();
+
+    nameP1_b.draw();
+    if (player1Loaded) {
+        statsP1_b.draw();
+    }
+
+    nameP2_b.draw();
+    if (player2Loaded) {
+        statsP2_b.draw();
+    }
+
     mainMenu_b.draw();
 
 }
@@ -216,6 +256,26 @@ void displayGameOver() {
     if (UI_DEBUG) {
         displayMouseLocation();
     }
+
+    string win;
+    if (gameField.rightPaddle.getPoints() == 5) {
+        win = player2.getName();
+    }
+    else {
+        win = player1.getName();
+    }
+    win += " wins!";
+    winner.setText(win);
+
+    scoreP1_b.setText(to_string(gameField.leftPaddle.getPoints()) + " points");
+    scoreP2_b.setText(to_string(gameField.rightPaddle.getPoints()) + " points");
+
+    game.gameOver();
+
+
+    scoreP1_b.draw();
+    scoreP2_b.draw();
+    winner.draw();
 
     mainMenu_b.draw();
 
@@ -298,93 +358,130 @@ void reshape(int w, int h) {
 
 // **************************
 // cursor and keboard button handlers
-void kbd(unsigned char key, int x, int y)
-{
-    // keboard input controls vary depending
-    //  on the current state of the program
-    switch (currentState)
+void kbd(unsigned char key, int x, int y) {
+
+    switch (keyboardMode)
     {
-    case Start:
-        // esc
-        if (key == 27) {
-            glutDestroyWindow(wd);
-            exit(0);
-        }
-        if (key != 27) {
-            currentState = Menu;
+    case notTyping:
+        // keboard input controls vary depending
+        //  on the current state of the program
+        switch (currentState)
+        {
+        case Start:
+            // esc
+            if (key == 27) {
+                glutDestroyWindow(wd);
+                exit(0);
+            }
+            if (key != 27) {
+                currentState = Menu;
+            }
+            break;
+        case Menu:
+            // esc
+            if (key == 27) {
+                glutDestroyWindow(wd);
+                exit(0);
+            }
+            if (key == 32) {
+                currentState = Play;
+            }
+            break;
+        case FieldSetup:
+            // esc
+            if (key == 27) {
+                currentState = Menu;
+            }
+            break;
+        case Play:
+            // esc and enter for pausing the game
+            if (key == 27) {
+                currentState = Pause;
+            }
+            if (key == 32) {
+                currentState = Pause;
+            }
+
+            // player 1 keyboard inputs
+            if (key == 119) {
+                gameField.leftPaddle.setDirection(Up);
+                gameField.leftPaddle.move();
+            }
+            else if (key == 115) {
+                gameField.leftPaddle.setDirection(Down);
+                gameField.leftPaddle.move();
+            }
+
+            // player 2 keyboard inputs
+
+            if (key == 111) {
+                gameField.rightPaddle.setDirection(Up);
+                gameField.rightPaddle.move();
+            }
+            else if (key == 108) {
+                gameField.rightPaddle.setDirection(Down);
+                gameField.rightPaddle.move();
+            }
+
+            if (key == 'r') {
+                gameField.initalizePaddles();
+                gameField.initalizeBall();
+            }
+
+            break;
+        case Pause:
+            // esc and enter for returning the game
+            if (key == 27 || key == (unsigned)' ') {
+                currentState = Play;
+            }
+            break;
+        case GameOver:
+            // any key
+            if (key) {
+                currentState = Menu;
+            }
+            break;
+        case Settings:
+            // esc
+            if (key == 27) {
+                currentState = Menu;
+            }
+            break;
+        default:
+            break;
         }
         break;
-    case Menu:
-        // esc
-        if (key == 27) {
-            glutDestroyWindow(wd);
-            exit(0);
+    case typing:
+        keyboardInput += key;
+        if (selectedTextBox == 1) {
+            if (key == 13) {
+                player1.loadData(nameP1_b.getText());
+                string stats = to_string(player1.getGamesWon()) + "-" + to_string(player1.getGamesLost()) +  " total:" + to_string(player1.getGamesPlayed());
+                statsP1_b.setText(stats);
+                player1Loaded = true;
+            }
+            nameP1_b.setText(keyboardInput);
         }
-        if (key == 32) {
-            currentState = Play;
-        }
-        break;
-    case FieldSetup:
-        // esc
-        if (key == 27) {
-            currentState = Menu;
-        }
-        break;
-    case Play:
-        // esc and enter for pausing the game
-        if (key == 27) {
-            currentState = Pause;
-        }
-        if (key == 32) {
-            currentState = Pause;
+        else if (selectedTextBox == 2) {
+            if (key == 13) {
+                player2.loadData(nameP2_b.getText());
+                string stats = to_string(player2.getGamesWon()) + "-" + to_string(player2.getGamesLost()) + " total:" + to_string(player2.getGamesPlayed());
+                statsP2_b.setText(stats);
+                player2Loaded = true;
+            }
+            nameP2_b.setText(keyboardInput);
         }
 
-        // player 1 keyboard inputs
-        if (key == 119) {
-            gameField.leftPaddle.setDirection(Up);
-            gameField.leftPaddle.move();
-        }else if (key == 115) {
-            gameField.leftPaddle.setDirection(Down);
-            gameField.leftPaddle.move();
+        if (key == 13 || key == 27) {
+            keyboardMode = notTyping;
+            break;
         }
 
-        // player 2 keyboard inputs
-
-        if(key == 111){
-            gameField.rightPaddle.setDirection(Up);
-            gameField.rightPaddle.move();
-        } else if(key == 108) {
-            gameField.rightPaddle.setDirection(Down);
-            gameField.rightPaddle.move();
-        }
-
-        if(key == 'r') {
-            gameField.initalizePaddles();
-            gameField.initalizeBall();
-        }
-
-        break;
-    case Pause:
-        // esc and enter for returning the game
-        if (key == 27 || key == (unsigned)' ') {
-            currentState = Play;
-        }
-        break;
-    case GameOver:
-        // any key
-        if (key) {
-            currentState = Menu;
-        }
-        break;
-    case Settings:
-        // esc
-        if (key == 27) {
-            currentState = Menu;
-        }
         break;
     default:
         break;
     }
+    
 
 
     glutPostRedisplay();
@@ -416,7 +513,6 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
-
     mouseX = x;
     mouseY = y;
 
@@ -446,18 +542,18 @@ void cursor(int x, int y) {
             playGame_b.setTextColor(menuTextColor);
         }
 
-        if (loadP1_b.hasOverlap(mouseX, mouseY)) {
-            loadP1_b.setTextColor(menuTextColorHover);
+        if (nameP1_b.hasOverlap(mouseX, mouseY)) {
+            nameP1_b.setTextColor(menuTextColorHover);
         }
         else {
-            loadP1_b.setTextColor(menuTextColor);
+            nameP1_b.setTextColor(menuTextColor);
         }
 
-        if (loadP2_b.hasOverlap(mouseX, mouseY)) {
-            loadP2_b.setTextColor(menuTextColorHover);
+        if (nameP2_b.hasOverlap(mouseX, mouseY)) {
+            nameP2_b.setTextColor(menuTextColorHover);
         }
         else {
-            loadP2_b.setTextColor(menuTextColor);
+            nameP2_b.setTextColor(menuTextColor);
         }
 
         if (mainMenu_b.hasOverlap(mouseX, mouseY)) {
@@ -466,8 +562,6 @@ void cursor(int x, int y) {
         else {
             mainMenu_b.setTextColor(menuTextColor);
         }
-
-
         break;
     case Play:
         break;
@@ -524,19 +618,48 @@ void mouse(int button, int state, int x, int y) {
             currentState = Play;
         }
 
-        // load player 1 data
-        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && loadP1_b.hasOverlap(x, y)) {
-            
+        // player 1 data
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && nameP1_b.hasOverlap(x, y)) {
+            if (keyboardMode == notTyping) {
+                keyboardMode = typing;
+                selectedTextBox = 1;
+                keyboardInput = "";
+                nameP1_b.setText("");
+            }
+            else {
+                selectedTextBox = 1;
+                keyboardInput = "";
+                nameP1_b.setText("");
+            }
+            player1Loaded = false;
         }
 
         // load player 2 data
-        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && loadP2_b.hasOverlap(x, y)) {
-
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && nameP2_b.hasOverlap(x, y)) {
+            if (keyboardMode == notTyping) {
+                keyboardMode = typing;
+                selectedTextBox = 2;
+                keyboardInput = "";
+                nameP2_b.setText("");
+            }
+            else {
+                selectedTextBox = 2;
+                keyboardInput = "";
+                nameP2_b.setText("");
+            }
+            player2Loaded = false;
         }
 
         // main menu
         if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && mainMenu_b.hasOverlap(x, y)) {
             currentState = Menu;
+        }
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && quitGame_b.hasOverlap(x, y)) {
+            currentState = Menu;
+        }
+
+        if (state == GLUT_DOWN && (!nameP1_b.hasOverlap(x, y) && !nameP2_b.hasOverlap(x, y) )) {
+            keyboardMode = notTyping;
         }
 
         break;
@@ -560,6 +683,8 @@ void mouse(int button, int state, int x, int y) {
     default:
         break;
     }
+
+    
     
 
     if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) { // right click
@@ -600,6 +725,8 @@ int main(int argc, char** argv) {
         glutTimerFunc(0, timer, 0);
 
         glutMainLoop();
+        glutDestroyWindow(wd);
+
     } else {
         // movement testing
         if (MOVEMENT_TESTING) {
