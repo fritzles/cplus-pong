@@ -26,7 +26,7 @@ const bool GAME_OVER_TESTING = false;
 
 // graphical game debug constants
 const bool GAME_STATE_DEBUG = false;
-const bool UI_DEBUG = true;
+const bool UI_DEBUG = false;
 
 enum GameState{ Start, Menu, FieldSetup, Play, Pause, GameOver, Settings };
 
