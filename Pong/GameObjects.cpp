@@ -4,7 +4,10 @@ Pong: Game Object Implementations
 Jordan Guzak, Michael Fritz, Chris Bracky
 */
 
+
 #include "GameObjects.hpp"
+
+using namespace std;
 
 // ***************************
 //  Global helper functions
@@ -96,19 +99,15 @@ Ball::Ball(double d, color c) {
     objColor.b = c.b;
 }
 
-Ball::~Ball() {
-
-}
+Ball::~Ball() { }
 
 /** setters and getters */
 void Ball::setAngle(int a) {
-    if (0 <= a && a < 360) {
-        angle = a;
-    }
+    angle = a%360;
 }
 
 void Ball::setSpeed(double s) {
-    if (s > 0) {
+    if (s >= 0) {
         speed = s;
     }
 }
@@ -122,9 +121,7 @@ int Ball::getAngle() const {
     return angle;
 }
 
-double Ball::getSpeed() const {
-    return speed;
-}
+double Ball::getSpeed() const { return speed; }
 
 /** override move function */
 void Ball::move() {
@@ -134,13 +131,42 @@ void Ball::move() {
     // rounding to compensate for math rounding errors
     xPos += xUpdate;
     yPos += yUpdate;
+
+}
+
+void Ball::draw() const {
+    glBegin(GL_TRIANGLE_FAN);
+    // center vertex is fill color
+    glColor3ub(objColor.r, objColor.g, objColor.b);
+    glVertex2i(getX(), getY());
+    // edge vertices are outside color
+    for (int i = 0; i <= 360; ++i) {
+        double radians = i * M_PI / 180.0;
+        glVertex2i(getX() + diameter/2 * cos(radians),
+                   getY() + diameter/2 * sin(radians));
+    }
+    glEnd();
+}
+
+void Ball::isOverlapping(Paddle &p) {
+//    cout << (xPos + (diameter/2))  << ":" << (p.getX() + p.getWidth()/2) << endl;
+    if((floor(xPos + diameter/2) == p.getX()) || (floor(xPos - diameter/2) == (p.getX() + p.getWidth()))) {
+        if(((yPos + diameter/2) >= p.getY()) &&
+           ((yPos - diameter/2) <= (p.getY() + p.getLength()))) {
+            objColor = {25, 25, 112};
+            setAngle(angle + 180 + 45 + p.getSpeed());
+            setSpeed(speed + .01);
+        } else {
+            objColor = {173, 255, 0};
+        }
+    }
 }
 
 // ***************************
 //  Paddle
 Paddle::Paddle() {
     points = 0;
-    length = 10;
+    length = 20;
     width = 2;
     speed = 1;
     direction = Up;
@@ -198,6 +224,18 @@ void Paddle::setSpeed(double s) {
     }
 }
 
+void Paddle::setLength(int l) {
+    if (l > 0) {
+        length = l;
+    }
+}
+
+void Paddle::setWidth(int w) {
+    if (w > 0) {
+        width = w;
+    }
+}
+
 int Paddle::getPoints() const {
     return points;
 }
@@ -217,11 +255,26 @@ double Paddle::getSpeed() const {
 /** override move function */
 void Paddle::move() {
     if (direction == Up) {
-        yPos += 1 * speed;
-    }
-    else {
         yPos -= 1 * speed;
     }
+    else {
+        yPos += 1 * speed;
+    }
+}
+
+void Paddle::draw() const {
+    glBegin(GL_QUADS);
+    glColor3ub(objColor.r, objColor.g, objColor.b);
+    glVertex2i(getX(), getY());
+    glVertex2i(getX(), getY() + length);
+    glVertex2i(getX() + width, getY() + length);
+    glVertex2i(getX() + width, getY());
+    glEnd();
+
+}
+
+void Paddle::point() {
+    points++;
 }
 
 // ***************************
@@ -266,11 +319,13 @@ Field::~Field() { }
 
 /** setters and getters */
 void Field::initalizePaddles() {
-    leftPaddle = Paddle();
+//    leftPaddle = Paddle();
     leftPaddle.setPaddleLocation(0, height / 2);
+    leftPaddle.setSpeed(10);
 
-    rightPaddle = Paddle();
+//    rightPaddle = Paddle();
     rightPaddle.setPaddleLocation(width - rightPaddle.getWidth(), height / 2);
+    rightPaddle.setSpeed(10);
 }
 
 void Field::initalizePaddles(Paddle l, Paddle r) {
@@ -283,13 +338,15 @@ void Field::initalizePaddles(Paddle l, Paddle r) {
 }
 
 void Field::initalizeBall() {
-    ball = Ball();
-    ball.setPos(width/2, height/2);
+//    ball = Ball();
+    ball.setSpeed(.25);
+    ball.setAngle(180 * rand()%2);
+    ball.setPos(width/2, height/2 + ball.diameter/2);
 }
 
 void Field::initalizeBall(Ball b) {
     ball = b;
-    ball.setPos(width / 2, height / 2);
+    ball.setPos(width/2, height/2 + ball.diameter);
 }
 
 int Field::getHeight() const {
@@ -302,4 +359,28 @@ int Field::getWidth() const {
 
 color Field::getColor() const {
     return fieldColor;
+}
+
+void Field::checkCollision() {
+    ball.isOverlapping(rightPaddle);
+    ball.isOverlapping(leftPaddle);
+
+//    cout << (ball.getY() < 0) << endl;
+    if(ball.getY() > 499) {
+        ball.setAngle(ball.getAngle() + (360-90));
+    } else if (ball.getY() < 0) {
+//        ball.setSpeed(0);
+        ball.setAngle(ball.getAngle() + 45);
+        cout << ball.getAngle() << endl;
+    }
+
+    if(ball.getX() > 600) {
+        leftPaddle.point();
+        initalizePaddles();
+        initalizeBall();
+    }else if( ball.getX() < 0){
+        rightPaddle.point();
+        initalizePaddles();
+        initalizeBall();
+    }
 }

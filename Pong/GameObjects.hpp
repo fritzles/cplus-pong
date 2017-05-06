@@ -13,11 +13,14 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 #include <iostream>
 
 #include "Colors.hpp"
+#include "Graphics.hpp"
 
 const static double PI = 3.14159265;
 
 enum PaddleDirection { Up, Down };
 enum ContactSide { Left, Right, Top, Bottom };
+
+class Paddle;
 
 // ***************************
 //  Agent
@@ -44,7 +47,6 @@ protected:
     color objColor;
 
 };
-
 // ***************************
 //  Ball
 class Ball : public Agent
@@ -79,6 +81,11 @@ public:
 
     virtual void move() override;
 
+    void draw() const;
+
+    void isOverlapping(Paddle &);
+
+
 private:
     int angle;
     double speed;
@@ -111,6 +118,8 @@ public:
     void setPaddleLocation(int, int);
     void setDirection(PaddleDirection);
     void setSpeed(double);
+    void setLength(int);
+    void setWidth(int);
 
     // getters
     int getPoints() const;
@@ -118,7 +127,11 @@ public:
     int getWidth() const;
     double getSpeed() const;
 
+    void point();
+
     virtual void move() override;
+
+    void draw() const;
 
 private:
     int points, length, width;
@@ -168,12 +181,14 @@ public:
     int getWidth() const;
     color getColor() const;
 
+    void checkCollision();
+
 
 private:
     int height, width;
     color fieldColor;
 
-    int DEFAULT_FIELD_HEIGHT = 400;
+    int DEFAULT_FIELD_HEIGHT = 300;
     int DEFAULT_FIELD_WIDTH = 600;
 
 };

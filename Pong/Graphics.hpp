@@ -17,8 +17,7 @@ Jordan Guzak, Michael Fritz, Chris Bracky
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
-#include <gl\glut.h>
-//#include <GL\glut.h> // not sure why visual studio hates the capital letter folder
+#include <GL/glut.h>
 #endif
 
 void init(void);

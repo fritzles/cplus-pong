@@ -21,7 +21,7 @@ void Player::saveData() {
     if(name != "") {
         fstream player;
         player.open(name + ".txt", fstream::out | fstream::trunc);
-        player << gamesWon << " " << gamesPlayed;
+        player << gamesWon << " " << gamesPlayed << endl;
     }else{
         cout << "You must first select a player." << endl;
     }

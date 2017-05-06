@@ -27,6 +27,9 @@
     <ClCompile Include="Gameplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UiObjects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Colors.hpp">
@@ -42,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Gameplay.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UiObjects.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
