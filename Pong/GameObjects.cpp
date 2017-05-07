@@ -153,7 +153,7 @@ void Ball::isOverlapping(Paddle &p) {
     if((floor(xPos + diameter/2) == p.getX()) || (floor(xPos - diameter/2) == (p.getX() + p.getWidth()))) {
         if(((yPos + diameter/2) >= p.getY()) &&
            ((yPos - diameter/2) <= (p.getY() + p.getLength()))) {
-            objColor = {25, 25, 112};
+            //objColor = {25, 25, 112};
             setAngle(angle + 180 + 45 + p.getSpeed());
             setSpeed(speed + .01);
         } else {
@@ -282,6 +282,7 @@ void Paddle::point() {
 Field::Field() {
     width = DEFAULT_FIELD_WIDTH;
     height = DEFAULT_FIELD_HEIGHT;
+    nextPaddle = 0;
     //fieldColor = BLACK;
 }
 
@@ -298,6 +299,7 @@ Field::Field(int w, int h) {
     fieldColor.r = 0;
     fieldColor.g = 0;
     fieldColor.b = 0;
+    nextPaddle = 0;
 }
 
 Field::Field(int w, int h, color c) {
@@ -313,40 +315,70 @@ Field::Field(int w, int h, color c) {
     fieldColor.r = c.r;
     fieldColor.g = c.g;
     fieldColor.b = c.b;
+    nextPaddle = 0;
 }
 
 Field::~Field() { }
 
 /** setters and getters */
 void Field::initalizePaddles() {
-//    leftPaddle = Paddle();
     leftPaddle.setPaddleLocation(0, height / 2);
     leftPaddle.setSpeed(10);
+    leftPaddle.setWidth(5);
+    leftPaddle.setLength(20);
 
-//    rightPaddle = Paddle();
     rightPaddle.setPaddleLocation(width - rightPaddle.getWidth(), height / 2);
     rightPaddle.setSpeed(10);
+    rightPaddle.setWidth(5);
+    rightPaddle.setLength(20);
 }
 
 void Field::initalizePaddles(Paddle l, Paddle r) {
     // store and place paddles
     leftPaddle = l;
     leftPaddle.setPaddleLocation(0, height/2);
+    leftPaddle.setSpeed(10);
+    leftPaddle.setWidth(5);
+    leftPaddle.setLength(20);
 
     rightPaddle = r;
-    rightPaddle.setPaddleLocation(width-rightPaddle.getWidth(), height/2);
+    rightPaddle.setPaddleLocation(width - rightPaddle.getWidth(), height / 2);
+    rightPaddle.setSpeed(10);
+    rightPaddle.setWidth(5);
+    rightPaddle.setLength(20);
 }
 
 void Field::initalizeBall() {
-//    ball = Ball();
-    ball.setSpeed(.25);
-    ball.setAngle(180 * rand()%2);
+    ball.setSpeed(.8);
+    ball.diameter = 10;
+
+    // first hit is to player 2, loser of the previous rally gets first hit
+    if (nextPaddle == 0) {
+        ball.setAngle(180);
+    }
+    else {
+        ball.setAngle(0);
+    }
+
+
+
     ball.setPos(width/2, height/2 + ball.diameter/2);
+    ball.setcolor(fieldColor);
 }
 
 void Field::initalizeBall(Ball b) {
     ball = b;
-    ball.setPos(width/2, height/2 + ball.diameter);
+    ball.setSpeed(.8);
+    ball.diameter = 10;
+    ball.setAngle(180 * rand() % 2);
+    ball.setPos(width / 2, height / 2 + ball.diameter / 2);
+    ball.setcolor(fieldColor);
+}
+
+void Field::setColor(color c) {
+    fieldColor.r = c.r;
+    fieldColor.g = c.g;
+    fieldColor.b = c.b;
 }
 
 int Field::getHeight() const {
@@ -366,21 +398,46 @@ void Field::checkCollision() {
     ball.isOverlapping(leftPaddle);
 
 //    cout << (ball.getY() < 0) << endl;
-    if(ball.getY() > 499) {
+    if(ball.getY() + ball.diameter > height) {
         ball.setAngle(ball.getAngle() + (360-90));
-    } else if (ball.getY() < 0) {
+    } else if (ball.getY() - ball.diameter < 0) {
 //        ball.setSpeed(0);
         ball.setAngle(ball.getAngle() + 45);
         cout << ball.getAngle() << endl;
     }
 
+    // check for score
     if(ball.getX() > 600) {
         leftPaddle.point();
+        nextPaddle = 1;
         initalizePaddles();
         initalizeBall();
     }else if( ball.getX() < 0){
         rightPaddle.point();
+        nextPaddle = 0;
         initalizePaddles();
         initalizeBall();
     }
+}
+
+void Field::draw() const {
+    
+    // draw border color box
+    glBegin(GL_QUADS);
+    glColor3ub(fieldColor.r, fieldColor.g, fieldColor.b);
+    glVertex2i(0, -10);
+    glVertex2i(0, height+10);
+    glVertex2i(width, height+10);
+    glVertex2i(width, -10);
+    glEnd();
+
+    // draw blank field
+    glBegin(GL_QUADS);
+    glColor3ub(0, 0, 0);
+    glVertex2i(0, 0);
+    glVertex2i(0, height);
+    glVertex2i(width, height);
+    glVertex2i(width, 0);
+    glEnd();
+
 }

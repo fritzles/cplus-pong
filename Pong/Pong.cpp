@@ -52,18 +52,18 @@ Paddle paddle1, paddle2;
 Button newGame_b("New Game", 150, 50, 325, 200);
 Button quitGame_b("Quit", 150, 50, 325, 350);
 Button playGame_b("Play Game", 150, 50, 325, 200);
-Button resumeGame_b("Resume Game", 170, 50, 320, 300);
-Button mainMenu_b("Main Menu", 170, 50, 320, 550);
+Button resumeGame_b("Resume Game", 170, 50, 325, 400);
+Button mainMenu_b("Main Menu", 170, 50, 325, 550);
 
 Button nameP1_b("Enter Player Name", 190, 50, 55, 250);
 Button statsP1_b("", 190, 50, 55, 300);
-Button scoreP1_b("", 190, 50, 55, 300);
+Button scoreP1_b("", 190, 50, 150, 300);
 
 Button nameP2_b("Enter Player Name", 190, 50, 515, 250);
 Button statsP2_b("", 190, 50, 515, 300);
-Button scoreP2_b("", 190, 50, 515, 300);
+Button scoreP2_b("", 190, 50, 550, 300);
 
-Button winner("", 190, 50, 320, 150);
+Button winner("", 190, 50, 320, 200);
 
 Button playerStats_b("temp", 170, 50, 320, 550);
 
@@ -82,16 +82,6 @@ void init() {
     currentState = Start;
     mouseX = mouseY = -1;
 
-    gameField.initalizePaddles();
-    gameField.initalizeBall();
-    gameField.ball.setSpeed(1);
-    gameField.ball.diameter = 10;
-    gameField.ball.setAngle(180);
-    gameField.rightPaddle.setLength(20);
-    gameField.rightPaddle.setWidth(5);
-    gameField.leftPaddle.setLength(20);
-    gameField.leftPaddle.setWidth(5);
-    gameField.leftPaddle.setY(gameField.getHeight()/2);
     newGame_b.setTextColor(menuTextColor);
     quitGame_b.setTextColor(menuTextColor);
 
@@ -175,6 +165,9 @@ void displayMenu() {
     newGame_b.draw();
     quitGame_b.draw();
 
+    player1Loaded = false;
+    player2Loaded = false;
+
 }
 
 void displayFieldSetup() {
@@ -186,6 +179,15 @@ void displayFieldSetup() {
     if (UI_DEBUG) {
         displayMouseLocation();
     }
+
+    gameBall = Ball();
+    paddle1 = Paddle();
+    paddle2 = Paddle();
+
+    gameField.setColor(green);
+    gameField.initalizePaddles(paddle1, paddle2);
+    gameField.initalizeBall(gameBall);
+
     playGame_b.draw();
 
     nameP1_b.draw();
@@ -208,16 +210,15 @@ void displayPlay() {
         displayCurrentState("Play");
     }
 
-//    displayCurrentState("P1: " + to_string(gameField.leftPaddle.getPoints()) + "   P2: " + to_string(gameField.rightPaddle.getPoints()));
-
-    playerStats_b.setText("P1: " + to_string(gameField.leftPaddle.getPoints()) + "   P2: " + to_string(gameField.rightPaddle.getPoints()));
-    playerStats_b.draw();
-
     if (UI_DEBUG) {
         displayMouseLocation();
     }
 
+    playerStats_b.setText("P1: " + to_string(gameField.leftPaddle.getPoints()) + "   P2: " + to_string(gameField.rightPaddle.getPoints()));
+    playerStats_b.draw();
+
     glTranslatef(screen_width / 2 - gameField.getWidth() / 2, screen_height / 2 - gameField.getHeight() + 50, 0.0f);
+    gameField.draw();
     gameField.leftPaddle.draw();
     gameField.rightPaddle.draw();
     gameField.ball.draw();
@@ -225,6 +226,19 @@ void displayPlay() {
     gameField.checkCollision();
 
     if(gameField.rightPaddle.getPoints() == 5 || gameField.leftPaddle.getPoints() == 5) {
+        if (gameField.leftPaddle.getPoints() > gameField.rightPaddle.getPoints()) {
+            player1.gamesWon++;
+            player1.gamesPlayed++;
+            player2.gamesPlayed++;
+        }
+        else {
+            player1.gamesPlayed++;
+            player2.gamesPlayed++;
+            player2.gamesWon++;
+        }
+
+        player1.saveData();
+        player2.saveData();
         currentState = GameOver;
     }
 
@@ -238,7 +252,12 @@ void displayPause() {
     if (UI_DEBUG) {
         displayMouseLocation();
     }
+
+    playerStats_b.setText("P1: " + to_string(gameField.leftPaddle.getPoints()) + "   P2: " + to_string(gameField.rightPaddle.getPoints()));
+    playerStats_b.draw();
+
     glTranslatef(screen_width / 2 - gameField.getWidth() / 2, screen_height / 2 - gameField.getHeight() + 50, 0.0f);
+    gameField.draw();
     gameField.leftPaddle.draw();
     gameField.rightPaddle.draw();
     gameField.ball.draw();
@@ -403,22 +422,22 @@ void kbd(unsigned char key, int x, int y) {
             }
 
             // player 1 keyboard inputs
-            if (key == 119) {
+            if (key == 119 && gameField.leftPaddle.getY() > 0) {
                 gameField.leftPaddle.setDirection(Up);
                 gameField.leftPaddle.move();
             }
-            else if (key == 115) {
+            else if (key == 115 && gameField.leftPaddle.getY() + gameField.leftPaddle.getLength() < gameField.getHeight()) {
                 gameField.leftPaddle.setDirection(Down);
                 gameField.leftPaddle.move();
             }
 
             // player 2 keyboard inputs
 
-            if (key == 111) {
+            if (key == 111 && gameField.rightPaddle.getY() > 0) {
                 gameField.rightPaddle.setDirection(Up);
                 gameField.rightPaddle.move();
             }
-            else if (key == 108) {
+            else if (key == 108 && gameField.rightPaddle.getY() + gameField.rightPaddle.getLength() < gameField.getHeight()) {
                 gameField.rightPaddle.setDirection(Down);
                 gameField.rightPaddle.move();
             }
@@ -456,16 +475,17 @@ void kbd(unsigned char key, int x, int y) {
         if (selectedTextBox == 1) {
             if (key == 13) {
                 player1.loadData(nameP1_b.getText());
-                string stats = to_string(player1.getGamesWon()) + "-" + to_string(player1.getGamesLost()) +  " total:" + to_string(player1.getGamesPlayed());
+                string stats = to_string(player1.getGamesWon()) + "-" + to_string(player1.getGamesLost()) +  " games played: " + to_string(player1.getGamesPlayed());
                 statsP1_b.setText(stats);
                 player1Loaded = true;
             }
             nameP1_b.setText(keyboardInput);
+
         }
         else if (selectedTextBox == 2) {
             if (key == 13) {
                 player2.loadData(nameP2_b.getText());
-                string stats = to_string(player2.getGamesWon()) + "-" + to_string(player2.getGamesLost()) + " total:" + to_string(player2.getGamesPlayed());
+                string stats = to_string(player2.getGamesWon()) + "-" + to_string(player2.getGamesLost()) + " games played: " + to_string(player2.getGamesPlayed());
                 statsP2_b.setText(stats);
                 player2Loaded = true;
             }
@@ -481,8 +501,6 @@ void kbd(unsigned char key, int x, int y) {
     default:
         break;
     }
-    
-
 
     glutPostRedisplay();
 
@@ -492,8 +510,11 @@ void kbd(unsigned char key, int x, int y) {
 void kbdS(int key, int x, int y) {
     switch (key) {
     case GLUT_KEY_DOWN:
-        gameField.rightPaddle.setDirection(Down);
-        gameField.rightPaddle.move();
+  
+        if (gameField.rightPaddle.getY() + gameField.rightPaddle.getLength() < gameField.getHeight()) {
+            gameField.rightPaddle.setDirection(Down);
+            gameField.rightPaddle.move();
+        }
         break;
     case GLUT_KEY_LEFT:
 
@@ -502,8 +523,10 @@ void kbdS(int key, int x, int y) {
 
         break;
     case GLUT_KEY_UP:
-        gameField.rightPaddle.setDirection(Up);
-        gameField.rightPaddle.move();
+        if (gameField.rightPaddle.getY() > 0) {
+            gameField.rightPaddle.setDirection(Up);
+            gameField.rightPaddle.move();
+        }
         break;
     }
 

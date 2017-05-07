@@ -175,6 +175,7 @@ public:
     // make and place ball on field
     void initalizeBall();
     void initalizeBall(Ball);
+    void setColor(color);
 
     // getters
     int getHeight() const;
@@ -183,9 +184,11 @@ public:
 
     void checkCollision();
 
+    void draw() const;
 
 private:
     int height, width;
+    int nextPaddle;
     color fieldColor;
 
     int DEFAULT_FIELD_HEIGHT = 300;
