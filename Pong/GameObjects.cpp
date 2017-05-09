@@ -349,7 +349,7 @@ void Field::initalizePaddles(Paddle l, Paddle r) {
 }
 
 void Field::initalizeBall() {
-    ball.setSpeed(.8);
+    ball.setSpeed(1);
     ball.diameter = 10;
 
     // first hit is to player 2, loser of the previous rally gets first hit
