@@ -289,13 +289,11 @@ void displayGameOver() {
     scoreP1_b.setText(to_string(gameField.leftPaddle.getPoints()) + " points");
     scoreP2_b.setText(to_string(gameField.rightPaddle.getPoints()) + " points");
 
-    game.gameOver();
-
+    //game.gameOver();
 
     scoreP1_b.draw();
     scoreP2_b.draw();
     winner.draw();
-
     mainMenu_b.draw();
 
     /*
